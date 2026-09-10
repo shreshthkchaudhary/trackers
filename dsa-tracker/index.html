@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One Problem a Day — DSA Master Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #07090e;
+      --bg-surface: #0e131f;
+      --bg-card: #131b2e;
+      --bg-card-hover: #19243d;
+      --border-subtle: #1c2742;
+      --border-focus: #3b82f6;
+      --text-main: #e2e8f0;
+      --text-muted: #8b9bb4;
+      --text-dim: #4f617d;
+      --accent-blue: #3b82f6;
+      --accent-blue-glow: rgba(59, 130, 246, 0.25);
+      --accent-cyan: #06b6d4;
+      --accent-purple: #8b5cf6;
+      --easy-bg: rgba(16, 185, 129, 0.12);
+      --easy-text: #34d399;
+      --easy-border: rgba(16, 185, 129, 0.3);
+      --med-bg: rgba(245, 158, 11, 0.12);
+      --med-text: #fbbf24;
+      --med-border: rgba(245, 158, 11, 0.3);
+      --hard-bg: rgba(239, 68, 68, 0.12);
+      --hard-text: #f87171;
+      --hard-border: rgba(239, 68, 68, 0.3);
+      --star-active: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f2b48;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2b3b64;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+      -webkit-text-fill-color: #93c5fd;
+    }
+
+    .brand-desc {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin-top: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+      user-select: none;
+    }
+    .btn:hover {
+      background: var(--bg-card-hover);
+      border-color: #2e3e66;
+    }
+    .btn-primary {
+      background: #2563eb;
+      border-color: #3b82f6;
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 10px var(--accent-blue-glow);
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #60a5fa;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+    }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin: 4px 0 2px;
+      color: #ffffff;
+    }
+    .stat-sub {
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
+
+    /* Streak Fire */
+    .streak-fire {
+      color: #f97316;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Progress Overall */
+    .progress-bar-container {
+      margin-bottom: 24px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px 18px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .progress-bar {
+      height: 8px;
+      background: #172033;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #06b6d4, #10b981);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    /* Today's Mission Hero */
+    .today-hero {
+      background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
+                  var(--bg-surface);
+      border: 1px solid #233458;
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 26px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+    .today-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #60a5fa;
+      margin-bottom: 8px;
+    }
+    .today-title {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .today-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      max-width: 800px;
+    }
+    .today-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* Controls & Filter Bar */
+    .controls-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 9px 12px 9px 36px;
+      color: var(--text-main);
+      font-size: 13.5px;
+      outline: none;
+      transition: border 0.15s ease;
+    }
+    .search-input:focus {
+      border-color: var(--border-focus);
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-right: 4px;
+    }
+    .chip {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.12s ease;
+    }
+    .chip:hover {
+      border-color: #2b3a5c;
+      color: var(--text-main);
+    }
+    .chip.active {
+      background: #1e2e4e;
+      border-color: var(--accent-blue);
+      color: #93c5fd;
+      font-weight: 600;
+    }
+
+    /* Stages Bar */
+    .stage-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .stage-tab {
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .stage-tab:hover {
+      color: var(--text-main);
+      border-color: #27375a;
+    }
+    .stage-tab.active {
+      background: #17243c;
+      border-color: var(--accent-blue);
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    /* Question Card */
+    .question-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .question-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .question-card:hover {
+      border-color: #273656;
+      background: #111726;
+    }
+    .question-card.completed {
+      opacity: 0.58;
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    .question-card.completed:hover {
+      opacity: 0.85;
+    }
+
+    .check-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1.5px solid #2e3e60;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .check-btn.checked {
+      background: #10b981;
+      border-color: #10b981;
+      color: #ffffff;
+    }
+
+    .day-badge {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #141c2e;
+      border: 1px solid #233150;
+      color: #94a3b8;
+      flex-shrink: 0;
+      min-width: 58px;
+      text-align: center;
+    }
+
+    .question-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .question-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .question-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      transition: color 0.12s;
+    }
+    .question-link:hover {
+      color: #60a5fa;
+      text-decoration: underline;
+    }
+    .question-sub {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Badges */
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.2px;
+    }
+    .badge-easy {
+      background: var(--easy-bg);
+      color: var(--easy-text);
+      border: 1px solid var(--easy-border);
+    }
+    .badge-med {
+      background: var(--med-bg);
+      color: var(--med-text);
+      border: 1px solid var(--med-border);
+    }
+    .badge-hard {
+      background: var(--hard-bg);
+      color: var(--hard-text);
+      border: 1px solid var(--hard-border);
+    }
+    .badge-plat {
+      background: #19243d;
+      color: #93c5fd;
+      border: 1px solid #2b3c66;
+      font-size: 10px;
+    }
+    .badge-sem3 {
+      background: rgba(139, 92, 246, 0.15);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      font-size: 10px;
+    }
+
+    /* Star & Note Icons */
+    .action-icon {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease;
+    }
+    .action-icon:hover {
+      color: var(--text-main);
+    }
+    .action-icon.starred {
+      color: var(--star-active);
+    }
+    .action-icon.has-notes {
+      color: #60a5fa;
+    }
+
+    /* Notes Drawer */
+    .notes-drawer {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-subtle);
+      display: none;
+    }
+    .notes-drawer.open {
+      display: block;
+    }
+    .notes-textarea {
+      width: 100%;
+      min-height: 70px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-size: 12px;
+      resize: vertical;
+      outline: none;
+    }
+    .notes-textarea:focus {
+      border-color: var(--border-focus);
+    }
+    .notes-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid #233458;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 520px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .modal-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--border-focus);
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--text-dim);
+    }
+
+    @media (max-width: 650px) {
+      .container { padding: 16px 12px 60px; }
+      .header-actions { width: 100%; justify-content: space-between; }
+      .today-title { font-size: 17px; }
+      .question-card { padding: 10px 12px; gap: 10px; }
+      .day-badge { min-width: 48px; font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header>
+    <div>
+      <div class="brand-title">
+        <span>DSA 365+ Tracker</span>
+        <span class="brand-badge">One Problem a Day</span>
+      </div>
+      <p class="brand-desc">Engineered for B.Tech Semester III & AI/ML Research Algorithmic Foundations</p>
+    </div>
+
+    <div class="header-actions">
+      <a href="../schedule-tracker.html" class="btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📅 Timetable</a>
+      <a href="../aiml-tracker/index.html" class="btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px; color: #06b6d4; border-color: rgba(6, 182, 212, 0.35); background: rgba(6, 182, 212, 0.08);">🧠 AI/ML Runway</a>
+      <button class="btn" onclick="openBackupModal()">💾 Backup & Sync</button>
+      <button class="btn btn-primary" onclick="openAddModal()">＋ Add Question</button>
+    </div>
+  </header>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Daily Streak</div>
+      <div class="stat-value streak-fire">
+        <span>🔥</span><span id="stat-streak">0</span> <span style="font-size: 15px; color: var(--text-muted);">days</span>
+      </div>
+      <div class="stat-sub" id="stat-last-solved">No problems solved yet</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Problems Solved</div>
+      <div class="stat-value" id="stat-solved">0 / 0</div>
+      <div class="stat-sub" id="stat-ratio">0% Completed</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Semester III Sync</div>
+      <div class="stat-value" id="stat-sem3" style="color: #c4b5fd;">0 / 60</div>
+      <div class="stat-sub">Competitive Coding-I syllabus</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Revision Vault</div>
+      <div class="stat-value" id="stat-revision" style="color: #fbbf24;">0</div>
+      <div class="stat-sub">Starred for test review</div>
+    </div>
+  </div>
+
+  <!-- Overall Progress -->
+  <div class="progress-bar-container">
+    <div class="progress-header">
+      <span>Mastery Progress</span>
+      <span id="progress-pct-label" style="color: #60a5fa; font-weight: 700;">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+    </div>
+  </div>
+
+  <!-- Today's Mission Hero -->
+  <div class="today-hero" id="today-hero">
+    <div class="today-tag">🎯 Today's Mission</div>
+    <div class="today-title" id="today-title">Loading mission...</div>
+    <div class="today-desc" id="today-desc">Focus on understanding the core pattern rather than memorizing code.</div>
+    <div class="today-actions">
+      <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="today-launch-btn">Solve on Platform ↗</a>
+      <button class="btn" id="today-mark-btn" onclick="toggleTodayMission()">Mark as Done ✓</button>
+      <button class="btn" onclick="jumpToNextUnsolved()">Next Unsolved ⏩</button>
+    </div>
+  </div>
+
+  <!-- Filter & Control Panel -->
+  <div class="controls-panel">
+    <div class="search-row">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" class="search-input" placeholder="Search problems, patterns, Day #, or tags..." oninput="handleSearchInput()" />
+      </div>
+
+      <div class="filter-chips">
+        <span class="filter-label">Difficulty:</span>
+        <span class="chip active" data-diff="all" onclick="setDiffFilter('all')">All</span>
+        <span class="chip" data-diff="Easy" onclick="setDiffFilter('Easy')">Easy</span>
+        <span class="chip" data-diff="Medium" onclick="setDiffFilter('Medium')">Medium</span>
+        <span class="chip" data-diff="Hard" onclick="setDiffFilter('Hard')">Hard</span>
+      </div>
+    </div>
+
+    <div class="search-row" style="align-items: center; justify-content: space-between;">
+      <div class="filter-chips">
+        <span class="filter-label">Status:</span>
+        <span class="chip active" data-status="all" onclick="setStatusFilter('all')">All</span>
+        <span class="chip" data-status="unsolved" onclick="setStatusFilter('unsolved')">Unsolved</span>
+        <span class="chip" data-status="solved" onclick="setStatusFilter('solved')">Solved</span>
+        <span class="chip" data-status="starred" onclick="setStatusFilter('starred')">Starred ⭐</span>
+      </div>
+
+      <div style="font-size: 12px; color: var(--text-dim);" id="result-count">
+        Showing all problems
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage Navigation Tabs -->
+  <div class="stage-tabs" id="stage-tabs">
+    <!-- Populated by JavaScript -->
+  </div>
+
+  <!-- Question List -->
+  <div class="question-list" id="question-list">
+    <!-- Populated by JavaScript -->
+  </div>
+
+  <footer>
+    <p>Consistent daily practice beats sporadic grinding. 1 problem every single day builds unshakeable mastery.</p>
+    <p style="margin-top: 4px; color: #3b4d70;">All data automatically persisted in browser localStorage.</p>
+  </footer>
+</div>
+
+<!-- Modal: Add Custom Question -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Add Custom Problem</div>
+      <button class="modal-close" onclick="closeAddModal()">&times;</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Day Number</label>
+      <input type="number" id="custom-day" class="form-input" placeholder="e.g. 231" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Problem Title</label>
+      <input type="text" id="custom-title" class="form-input" placeholder="e.g. 3Sum Closest" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Problem URL</label>
+      <input type="url" id="custom-url" class="form-input" placeholder="https://leetcode.com/problems/..." />
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <div class="form-group" style="flex: 1;">
+        <label class="form-label">Platform</label>
+        <select id="custom-plat" class="form-select">
+          <option value="LeetCode">LeetCode</option>
+          <option value="GFG">GeeksforGeeks</option>
+          <option value="Codeforces">Codeforces</option>
+          <option value="CodeChef">CodeChef</option>
+          <option value="Custom">Custom / Other</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="flex: 1;">
+        <label class="form-label">Difficulty</label>
+        <select id="custom-diff" class="form-select">
+          <option value="Easy">Easy</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Stage / Category</label>
+      <select id="custom-stage" class="form-select">
+        <!-- populated from stages -->
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Key Pattern / Theory Note</label>
+      <input type="text" id="custom-pattern" class="form-input" placeholder="e.g. Two Pointers, Sorting" />
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeAddModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCustomProblem()">Add to Tracker</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Backup & Sync -->
+<div class="modal-overlay" id="backup-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Backup & Sync Data</div>
+      <button class="modal-close" onclick="closeBackupModal()">&times;</button>
+    </div>
+
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+      Export your progress, streaks, custom questions, and problem notes into a single JSON file. You can restore it on any device.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <button class="btn btn-primary" onclick="exportData()" style="justify-content: center; padding: 11px;">
+        ⬇ Download Progress JSON Backup
+      </button>
+
+      <div style="border-top: 1px solid var(--border-subtle); margin: 8px 0;"></div>
+
+      <label class="btn" style="justify-content: center; padding: 11px; cursor: pointer;">
+        ⬆ Restore from JSON File
+        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(event)" />
+      </label>
+
+      <button class="btn" onclick="resetAllProgress()" style="color: #f87171; border-color: rgba(239, 68, 68, 0.3); justify-content: center;">
+        ⚠️ Reset All Progress
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   Comprehensive Curated Questions (Day 1 - 230+)
+   Stage 1 to 4 strictly synchronize with Semester 3 Competitive Coding-I.
+   Stage 5 to 10 cover Interview Mastery & AI/ML Algorithmic Foundations.
+   ========================================================================== */
+
+const STAGES = [
+  { id: "all", name: "All Stages" },
+  { id: "sem3_rec_arr", name: "Sem 3: Recursion & Arrays (Days 1–25)", isSem3: true },
+  { id: "sem3_bs_mat", name: "Sem 3: Binary Search & Matrices (Days 26–45)", isSem3: true },
+  { id: "sem3_str_ll", name: "Sem 3: Strings & Linked Lists (Days 46–70)", isSem3: true },
+  { id: "sem3_stk_que", name: "Sem 3: Stacks, Queues & Windows (Days 71–95)", isSem3: true },
+  { id: "heaps", name: "Stage 5: Heaps & Priority Queues (Days 96–110)" },
+  { id: "trees", name: "Stage 6: Trees, BST & Tries (Days 111–135)" },
+  { id: "backtrack", name: "Stage 7: Recursion & Backtracking (Days 136–150)" },
+  { id: "graphs", name: "Stage 8: Graphs & Shortest Path (Days 151–175)" },
+  { id: "dp", name: "Stage 9: Dynamic Programming (Days 176–210)" },
+  { id: "bit_ml", name: "Stage 10: Bit Manipulation & ML Math (Days 211–230+)" }
+];
+
+const INITIAL_PROBLEMS = [
+  // Stage 1: Sem 3 - Recursion & Arrays (Days 1-25)
+  { d: 1, t: "Basic Input / Output & Math", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/basic-input-and-output/0", diff: "Easy", st: "sem3_rec_arr", pat: "Basics · College Session 1" },
+  { d: 2, t: "9. Palindrome Number", p: "LeetCode", u: "https://leetcode.com/problems/palindrome-number/", diff: "Easy", st: "sem3_rec_arr", pat: "Math · Modulo arithmetic" },
+  { d: 3, t: "Factorial of a Number using Recursion", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/factorial5739/1", diff: "Easy", st: "sem3_rec_arr", pat: "Recursion · College Session 2" },
+  { d: 4, t: "509. Fibonacci Number", p: "LeetCode", u: "https://leetcode.com/problems/fibonacci-number/", diff: "Easy", st: "sem3_rec_arr", pat: "Recursion tree · Base case" },
+  { d: 5, t: "50. Pow(x, n)", p: "LeetCode", u: "https://leetcode.com/problems/powx-n/", diff: "Medium", st: "sem3_rec_arr", pat: "Binary Exponentiation · College Session 2" },
+  { d: 6, t: "1137. N-th Tribonacci Number", p: "LeetCode", u: "https://leetcode.com/problems/n-th-tribonacci-number/", diff: "Easy", st: "sem3_rec_arr", pat: "Linear recurrence" },
+  { d: 7, t: "Print 1 to N without Loop (Recursion)", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/print-1-to-n-without-using-loops-1587115620/1", diff: "Easy", st: "sem3_rec_arr", pat: "Recursion head/tail calls" },
+  { d: 8, t: "Sum of Digits of a Number using Recursion", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/sum-of-digits1742/1", diff: "Easy", st: "sem3_rec_arr", pat: "Recursion accumulator" },
+  { d: 9, t: "724. Find Pivot Index", p: "LeetCode", u: "https://leetcode.com/problems/find-pivot-index/", diff: "Easy", st: "sem3_rec_arr", pat: "Prefix Sum · College Session 3" },
+  { d: 10, t: "Tower of Hanoi with Recursion Tree", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/tower-of-hanoi-1587115621/1", diff: "Medium", st: "sem3_rec_arr", pat: "Divide & Conquer · College Session 3" },
+  { d: 11, t: "268. Missing Number", p: "LeetCode", u: "https://leetcode.com/problems/missing-number/", diff: "Easy", st: "sem3_rec_arr", pat: "Gauss Sum / XOR trick" },
+  { d: 12, t: "283. Move Zeroes", p: "LeetCode", u: "https://leetcode.com/problems/move-zeroes/", diff: "Easy", st: "sem3_rec_arr", pat: "Two Pointers · In-place" },
+  { d: 13, t: "189. Rotate Array by K Positions", p: "LeetCode", u: "https://leetcode.com/problems/rotate-array/", diff: "Medium", st: "sem3_rec_arr", pat: "Reversal Algorithm · College Session 5" },
+  { d: 14, t: "485. Max Consecutive Ones", p: "LeetCode", u: "https://leetcode.com/problems/max-consecutive-ones/", diff: "Easy", st: "sem3_rec_arr", pat: "Linear scan · Max tracking" },
+  { d: 15, t: "26. Remove Duplicates from Sorted Array", p: "LeetCode", u: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/", diff: "Easy", st: "sem3_rec_arr", pat: "Two Pointers · In-place write" },
+  { d: 16, t: "1. Two Sum", p: "LeetCode", u: "https://leetcode.com/problems/two-sum/", diff: "Easy", st: "sem3_rec_arr", pat: "Hash Map complement · College Session 5" },
+  { d: 17, t: "169. Majority Element (Moore's Voting)", p: "LeetCode", u: "https://leetcode.com/problems/majority-element/", diff: "Easy", st: "sem3_rec_arr", pat: "Boyer-Moore Voting · College Session 4" },
+  { d: 18, t: "53. Maximum Subarray (Kadane's)", p: "LeetCode", u: "https://leetcode.com/problems/maximum-subarray/", diff: "Medium", st: "sem3_rec_arr", pat: "Kadane's Algorithm · College Session 4" },
+  { d: 19, t: "152. Maximum Product Subarray", p: "LeetCode", u: "https://leetcode.com/problems/maximum-product-subarray/", diff: "Medium", st: "sem3_rec_arr", pat: "Dynamic bounds · College Session 4" },
+  { d: 20, t: "75. Sort Colors (Dutch National Flag)", p: "LeetCode", u: "https://leetcode.com/problems/sort-colors/", diff: "Medium", st: "sem3_rec_arr", pat: "3-way partitioning · College Session 6" },
+  { d: 21, t: "3005. Count Elements With Maximum Frequency", p: "LeetCode", u: "https://leetcode.com/problems/count-elements-with-maximum-frequency/", diff: "Easy", st: "sem3_rec_arr", pat: "Frequency map · College Session 5" },
+  { d: 22, t: "11. Container With Most Water", p: "LeetCode", u: "https://leetcode.com/problems/container-with-most-water/", diff: "Medium", st: "sem3_rec_arr", pat: "Greedy Two Pointers · College Session 6" },
+  { d: 23, t: "42. Trapping Rain Water", p: "LeetCode", u: "https://leetcode.com/problems/trapping-rain-water/", diff: "Hard", st: "sem3_rec_arr", pat: "Two Pointers / Prefix bounds · College Session 6" },
+  { d: 24, t: "15. 3Sum", p: "LeetCode", u: "https://leetcode.com/problems/3sum/", diff: "Medium", st: "sem3_rec_arr", pat: "Sorting + Two Pointers" },
+  { d: 25, t: "18. 4Sum", p: "LeetCode", u: "https://leetcode.com/problems/4sum/", diff: "Medium", st: "sem3_rec_arr", pat: "K-Sum Generalization" },
+
+  // Stage 2: Sem 3 - Binary Search & 2D Matrices (Days 26-45)
+  { d: 26, t: "704. Binary Search (Lower & Upper Bound)", p: "LeetCode", u: "https://leetcode.com/problems/binary-search/", diff: "Easy", st: "sem3_bs_mat", pat: "Search space halving · College Session 7" },
+  { d: 27, t: "278. First Bad Version", p: "LeetCode", u: "https://leetcode.com/problems/first-bad-version/", diff: "Easy", st: "sem3_bs_mat", pat: "Monotonic predicate · College Session 7" },
+  { d: 28, t: "35. Search Insert Position", p: "LeetCode", u: "https://leetcode.com/problems/search-insert-position/", diff: "Easy", st: "sem3_bs_mat", pat: "Lower bound boundary" },
+  { d: 29, t: "34. Find First and Last Position in Sorted Array", p: "LeetCode", u: "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/", diff: "Medium", st: "sem3_bs_mat", pat: "Double binary search" },
+  { d: 30, t: "69. Sqrt(x)", p: "LeetCode", u: "https://leetcode.com/problems/sqrtx/", diff: "Easy", st: "sem3_bs_mat", pat: "Binary search on integer range" },
+  { d: 31, t: "162. Find Peak Element", p: "LeetCode", u: "https://leetcode.com/problems/find-peak-element/", diff: "Medium", st: "sem3_bs_mat", pat: "Local gradient check" },
+  { d: 32, t: "33. Search in Rotated Sorted Array", p: "LeetCode", u: "https://leetcode.com/problems/search-in-rotated-sorted-array/", diff: "Medium", st: "sem3_bs_mat", pat: "Identify sorted half · College Session 8" },
+  { d: 33, t: "81. Search in Rotated Sorted Array II", p: "LeetCode", u: "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/", diff: "Medium", st: "sem3_bs_mat", pat: "Handling duplicates · College Session 8" },
+  { d: 34, t: "153. Find Minimum in Rotated Sorted Array", p: "LeetCode", u: "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/", diff: "Medium", st: "sem3_bs_mat", pat: "Inflection point discovery" },
+  { d: 35, t: "540. Single Element in a Sorted Array", p: "LeetCode", u: "https://leetcode.com/problems/single-element-in-a-sorted-array/", diff: "Medium", st: "sem3_bs_mat", pat: "Even-Odd index invariant" },
+  { d: 36, t: "875. Koko Eating Bananas", p: "LeetCode", u: "https://leetcode.com/problems/koko-eating-bananas/", diff: "Medium", st: "sem3_bs_mat", pat: "BS on Answer range · College Session 7" },
+  { d: 37, t: "1011. Capacity To Ship Packages Within D Days", p: "LeetCode", u: "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/", diff: "Medium", st: "sem3_bs_mat", pat: "Greedy feasibility function" },
+  { d: 38, t: "Aggressive Cows / Magnetic Force Between Balls", p: "LeetCode", u: "https://leetcode.com/problems/magnetic-force-between-two-balls/", diff: "Medium", st: "sem3_bs_mat", pat: "Maximize Minimum Distance · College Session 8" },
+  { d: 39, t: "Allocate Minimum Number of Pages", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1", diff: "Medium", st: "sem3_bs_mat", pat: "Classic interview partitioning" },
+  { d: 40, t: "410. Split Array Largest Sum", p: "LeetCode", u: "https://leetcode.com/problems/split-array-largest-sum/", diff: "Hard", st: "sem3_bs_mat", pat: "Minimax BS on answer" },
+  { d: 41, t: "74. Search a 2D Matrix", p: "LeetCode", u: "https://leetcode.com/problems/search-a-2d-matrix/", diff: "Medium", st: "sem3_bs_mat", pat: "Virtual 1D coordinate flattening" },
+  { d: 42, t: "240. Search a 2D Matrix II", p: "LeetCode", u: "https://leetcode.com/problems/search-a-2d-matrix-ii/", diff: "Medium", st: "sem3_bs_mat", pat: "Top-Right corner elimination · College Session 9" },
+  { d: 43, t: "54. Spiral Matrix", p: "LeetCode", u: "https://leetcode.com/problems/spiral-matrix/", diff: "Medium", st: "sem3_bs_mat", pat: "Boundary shrinking traversal · College Session 9" },
+  { d: 44, t: "48. Rotate Image 90 Degrees Clockwise", p: "LeetCode", u: "https://leetcode.com/problems/rotate-image/", diff: "Medium", st: "sem3_bs_mat", pat: "Transpose & Reverse · College Session 10" },
+  { d: 45, t: "2643. Row With Maximum Ones", p: "LeetCode", u: "https://leetcode.com/problems/row-with-maximum-ones/", diff: "Easy", st: "sem3_bs_mat", pat: "Matrix row counting · College Session 10" },
+
+  // Stage 3: Sem 3 - Strings & Linked Lists (Days 46-70)
+  { d: 46, t: "125. Valid Palindrome", p: "LeetCode", u: "https://leetcode.com/problems/valid-palindrome/", diff: "Easy", st: "sem3_str_ll", pat: "Two pointers inward scan" },
+  { d: 47, t: "242. Valid Anagram", p: "LeetCode", u: "https://leetcode.com/problems/valid-anagram/", diff: "Easy", st: "sem3_str_ll", pat: "Frequency table · College Session 12" },
+  { d: 48, t: "387. First Unique Character in a String", p: "LeetCode", u: "https://leetcode.com/problems/first-unique-character-in-a-string/", diff: "Easy", st: "sem3_str_ll", pat: "Character count array · College Session 11" },
+  { d: 49, t: "205. Isomorphic Strings", p: "LeetCode", u: "https://leetcode.com/problems/isomorphic-strings/", diff: "Easy", st: "sem3_str_ll", pat: "Bijection mapping · College Session 11" },
+  { d: 50, t: "14. Longest Common Prefix", p: "LeetCode", u: "https://leetcode.com/problems/longest-common-prefix/", diff: "Easy", st: "sem3_str_ll", pat: "Vertical vs Horizontal matching" },
+  { d: 51, t: "151. Reverse Words in a String", p: "LeetCode", u: "https://leetcode.com/problems/reverse-words-in-a-string/", diff: "Medium", st: "sem3_str_ll", pat: "Word tokenization & reversal" },
+  { d: 52, t: "49. Group Anagrams", p: "LeetCode", u: "https://leetcode.com/problems/group-anagrams/", diff: "Medium", st: "sem3_str_ll", pat: "Sorted tuple hash key" },
+  { d: 53, t: "Longest Prefix Suffix (LPS Array)", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/longest-prefix-suffix2527/1", diff: "Medium", st: "sem3_str_ll", pat: "KMP preprocessing · College Session 12" },
+  { d: 54, t: "686. Repeated String Match", p: "LeetCode", u: "https://leetcode.com/problems/repeated-string-match/", diff: "Medium", st: "sem3_str_ll", pat: "Minimum repetition check · College Session 12" },
+  { d: 55, t: "206. Reverse Linked List", p: "LeetCode", u: "https://leetcode.com/problems/reverse-linked-list/", diff: "Easy", st: "sem3_str_ll", pat: "Iterative 3 pointers · College Session 14" },
+  { d: 56, t: "876. Middle of the Linked List", p: "LeetCode", u: "https://leetcode.com/problems/middle-of-the-linked-list/", diff: "Easy", st: "sem3_str_ll", pat: "Tortoise & Hare (Fast/Slow) · College Session 14" },
+  { d: 57, t: "141. Linked List Cycle", p: "LeetCode", u: "https://leetcode.com/problems/linked-list-cycle/", diff: "Easy", st: "sem3_str_ll", pat: "Floyd Cycle Detection" },
+  { d: 58, t: "142. Linked List Cycle II", p: "LeetCode", u: "https://leetcode.com/problems/linked-list-cycle-ii/", diff: "Medium", st: "sem3_str_ll", pat: "Cycle start node proof" },
+  { d: 59, t: "237. Delete Node in a Linked List", p: "LeetCode", u: "https://leetcode.com/problems/delete-node-in-a-linked-list/", diff: "Medium", st: "sem3_str_ll", pat: "Copy next node value · College Session 13" },
+  { d: 60, t: "2095. Delete the Middle Node of a Linked List", p: "LeetCode", u: "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/", diff: "Medium", st: "sem3_str_ll", pat: "Fast & slow pointer with prev" },
+  { d: 61, t: "19. Remove Nth Node From End of List", p: "LeetCode", u: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", diff: "Medium", st: "sem3_str_ll", pat: "N-step lead pointer" },
+  { d: 62, t: "21. Merge Two Sorted Lists", p: "LeetCode", u: "https://leetcode.com/problems/merge-two-sorted-lists/", diff: "Easy", st: "sem3_str_ll", pat: "Dummy head technique · College Session 14" },
+  { d: 63, t: "234. Palindrome Linked List", p: "LeetCode", u: "https://leetcode.com/problems/palindrome-linked-list/", diff: "Easy", st: "sem3_str_ll", pat: "Mid split + reverse second half" },
+  { d: 64, t: "160. Intersection of Two Linked Lists", p: "LeetCode", u: "https://leetcode.com/problems/intersection-of-two-linked-lists/", diff: "Easy", st: "sem3_str_ll", pat: "Dual pointer length normalization" },
+  { d: 65, t: "2. Add Two Numbers", p: "LeetCode", u: "https://leetcode.com/problems/add-two-numbers/", diff: "Medium", st: "sem3_str_ll", pat: "Digit-by-digit carry · College Session 15" },
+  { d: 66, t: "61. Rotate List", p: "LeetCode", u: "https://leetcode.com/problems/rotate-list/", diff: "Medium", st: "sem3_str_ll", pat: "Ring link + cut at k · College Session 15" },
+  { d: 67, t: "83. Remove Duplicates from Sorted List", p: "LeetCode", u: "https://leetcode.com/problems/remove-duplicates-from-sorted-list/", diff: "Easy", st: "sem3_str_ll", pat: "Adjacent comparison · College Session 15" },
+  { d: 68, t: "328. Odd Even Linked List", p: "LeetCode", u: "https://leetcode.com/problems/odd-even-linked-list/", diff: "Medium", st: "sem3_str_ll", pat: "Two head pointer splicing" },
+  { d: 69, t: "25. Reverse Nodes in k-Group", p: "LeetCode", u: "https://leetcode.com/problems/reverse-nodes-in-k-group/", diff: "Hard", st: "sem3_str_ll", pat: "Block-wise pointer reversal" },
+  { d: 70, t: "148. Sort List", p: "LeetCode", u: "https://leetcode.com/problems/sort-list/", diff: "Medium", st: "sem3_str_ll", pat: "Merge Sort on Linked List" },
+
+  // Stage 4: Sem 3 - Stacks, Queues & Sliding Window (Days 71-95)
+  { d: 71, t: "Stack Implementation Using Array", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/implement-stack-using-array/1", diff: "Easy", st: "sem3_stk_que", pat: "LIFO pointer mechanics · College Session 16" },
+  { d: 72, t: "20. Valid Parentheses", p: "LeetCode", u: "https://leetcode.com/problems/valid-parentheses/", diff: "Easy", st: "sem3_stk_que", pat: "Stack bracket matching · College Session 17" },
+  { d: 73, t: "155. Min Stack (O(1) Auxiliary)", p: "LeetCode", u: "https://leetcode.com/problems/min-stack/", diff: "Medium", st: "sem3_stk_que", pat: "Encoded value or dual stack · College Session 18" },
+  { d: 74, t: "150. Evaluate Reverse Polish Notation", p: "LeetCode", u: "https://leetcode.com/problems/evaluate-reverse-polish-notation/", diff: "Medium", st: "sem3_stk_que", pat: "Postfix evaluation · College Session 17" },
+  { d: 75, t: "Next Greater Element (NGE)", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/next-larger-element-1587115620/1", diff: "Medium", st: "sem3_stk_que", pat: "Monotonic decreasing stack · College Session 16" },
+  { d: 76, t: "503. Next Greater Element II (Circular)", p: "LeetCode", u: "https://leetcode.com/problems/next-greater-element-ii/", diff: "Medium", st: "sem3_stk_que", pat: "Virtual 2N array loop" },
+  { d: 77, t: "Previous Smaller Element (PSE)", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/smallest-number-on-left3403/1", diff: "Medium", st: "sem3_stk_que", pat: "Left monotonic stack · College Session 16/17" },
+  { d: 78, t: "739. Daily Temperatures", p: "LeetCode", u: "https://leetcode.com/problems/daily-temperatures/", diff: "Medium", st: "sem3_stk_que", pat: "Index monotonic stack" },
+  { d: 79, t: "735. Asteroid Collision", p: "LeetCode", u: "https://leetcode.com/problems/asteroid-collision/", diff: "Medium", st: "sem3_stk_que", pat: "Simulation with stack · College Session 18" },
+  { d: 80, t: "901. Online Stock Span", p: "LeetCode", u: "https://leetcode.com/problems/online-stock-span/", diff: "Medium", st: "sem3_stk_que", pat: "Accumulated span in stack · College Session 18" },
+  { d: 81, t: "84. Largest Rectangle in Histogram", p: "LeetCode", u: "https://leetcode.com/problems/largest-rectangle-in-histogram/", diff: "Hard", st: "sem3_stk_que", pat: "NSE & PSE monotonic boundaries" },
+  { d: 82, t: "85. Maximal Rectangle in Binary Matrix", p: "LeetCode", u: "https://leetcode.com/problems/maximal-rectangle/", diff: "Hard", st: "sem3_stk_que", pat: "2D histogram extension" },
+  { d: 83, t: "232. Implement Queue using Stacks", p: "LeetCode", u: "https://leetcode.com/problems/implement-queue-using-stacks/", diff: "Easy", st: "sem3_stk_que", pat: "Amortized O(1) push/pop · College Session 19" },
+  { d: 84, t: "225. Implement Stack using Queues", p: "LeetCode", u: "https://leetcode.com/problems/implement-stack-using-queues/", diff: "Easy", st: "sem3_stk_que", pat: "Single queue rotation · College Session 19" },
+  { d: 85, t: "622. Design Circular Queue", p: "LeetCode", u: "https://leetcode.com/problems/design-circular-queue/", diff: "Medium", st: "sem3_stk_que", pat: "Modulo index buffer · College Session 19" },
+  { d: 86, t: "239. Sliding Window Maximum", p: "LeetCode", u: "https://leetcode.com/problems/sliding-window-maximum/", diff: "Hard", st: "sem3_stk_que", pat: "Monotonic Deque (double-ended)" },
+  { d: 87, t: "643. Maximum Average Subarray I", p: "LeetCode", u: "https://leetcode.com/problems/maximum-average-subarray-i/", diff: "Easy", st: "sem3_stk_que", pat: "Fixed window size k" },
+  { d: 88, t: "1456. Maximum Number of Vowels in Substring", p: "LeetCode", u: "https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/", diff: "Medium", st: "sem3_stk_que", pat: "Slide & update vowel tally" },
+  { d: 89, t: "3. Longest Substring Without Repeating Characters", p: "LeetCode", u: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", diff: "Medium", st: "sem3_stk_que", pat: "Variable window + last index map" },
+  { d: 90, t: "1004. Max Consecutive Ones III", p: "LeetCode", u: "https://leetcode.com/problems/max-consecutive-ones-iii/", diff: "Medium", st: "sem3_stk_que", pat: "At most K zeroes in window" },
+  { d: 91, t: "904. Fruit Into Baskets", p: "LeetCode", u: "https://leetcode.com/problems/fruit-into-baskets/", diff: "Medium", st: "sem3_stk_que", pat: "At most 2 distinct types" },
+  { d: 92, t: "567. Permutation in String", p: "LeetCode", u: "https://leetcode.com/problems/permutation-in-string/", diff: "Medium", st: "sem3_stk_que", pat: "Fixed frequency matching window" },
+  { d: 93, t: "424. Longest Repeating Character Replacement", p: "LeetCode", u: "https://leetcode.com/problems/longest-repeating-character-replacement/", diff: "Medium", st: "sem3_stk_que", pat: "Window length - maxFreq <= k" },
+  { d: 94, t: "209. Minimum Size Subarray Sum", p: "LeetCode", u: "https://leetcode.com/problems/minimum-size-subarray-sum/", diff: "Medium", st: "sem3_stk_que", pat: "Shrink window while sum >= target" },
+  { d: 95, t: "76. Minimum Window Substring", p: "LeetCode", u: "https://leetcode.com/problems/minimum-window-substring/", diff: "Hard", st: "sem3_stk_que", pat: "Two-pointer contractive window" },
+
+  // Stage 5: Heaps & Priority Queues (Days 96-110)
+  { d: 96, t: "215. Kth Largest Element in an Array", p: "LeetCode", u: "https://leetcode.com/problems/kth-largest-element-in-an-array/", diff: "Medium", st: "heaps", pat: "Min-Heap of size K / QuickSelect" },
+  { d: 97, t: "703. Kth Largest Element in a Stream", p: "LeetCode", u: "https://leetcode.com/problems/kth-largest-element-in-a-stream/", diff: "Easy", st: "heaps", pat: "Online heap maintenance" },
+  { d: 98, t: "1046. Last Stone Weight", p: "LeetCode", u: "https://leetcode.com/problems/last-stone-weight/", diff: "Easy", st: "heaps", pat: "Max-Heap simulation" },
+  { d: 99, t: "347. Top K Frequent Elements", p: "LeetCode", u: "https://leetcode.com/problems/top-k-frequent-elements/", diff: "Medium", st: "heaps", pat: "Frequency map + min-heap / Bucket sort" },
+  { d: 100, t: "295. Find Median from Data Stream", p: "LeetCode", u: "https://leetcode.com/problems/find-median-from-data-stream/", diff: "Hard", st: "heaps", pat: "Dual heaps (Max-Heap + Min-Heap)" },
+  { d: 101, t: "621. Task Scheduler", p: "LeetCode", u: "https://leetcode.com/problems/task-scheduler/", diff: "Medium", st: "heaps", pat: "Greedy max freq + cooldown queue" },
+  { d: 102, t: "23. Merge k Sorted Lists", p: "LeetCode", u: "https://leetcode.com/problems/merge-k-sorted-lists/", diff: "Hard", st: "heaps", pat: "K-way min-heap merging" },
+  { d: 103, t: "373. Find K Pairs with Smallest Sums", p: "LeetCode", u: "https://leetcode.com/problems/find-k-pairs-with-smallest-sums/", diff: "Medium", st: "heaps", pat: "Index pair min-heap exploration" },
+  { d: 104, t: "2336. Smallest Number in Infinite Set", p: "LeetCode", u: "https://leetcode.com/problems/smallest-number-in-infinite-set/", diff: "Medium", st: "heaps", pat: "Min-Heap + HashSet deduplication" },
+  { d: 105, t: "767. Reorganize String", p: "LeetCode", u: "https://leetcode.com/problems/reorganize-string/", diff: "Medium", st: "heaps", pat: "Max-Heap adjacent placement" },
+  { d: 106, t: "2542. Maximum Subsequence Score", p: "LeetCode", u: "https://leetcode.com/problems/maximum-subsequence-score/", diff: "Medium", st: "heaps", pat: "Sort pairs + running min-heap" },
+  { d: 107, t: "Minimum Cost to Connect Sticks", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/minimum-cost-of-ropes-1587115620/1", diff: "Easy", st: "heaps", pat: "Huffman greedy two smallest merge" },
+  { d: 108, t: "1834. Single-Threaded CPU", p: "LeetCode", u: "https://leetcode.com/problems/single-threaded-cpu/", diff: "Medium", st: "heaps", pat: "Time simulation + processing heap" },
+  { d: 109, t: "1642. Furthest Building You Can Reach", p: "LeetCode", u: "https://leetcode.com/problems/furthest-building-you-can-reach/", diff: "Medium", st: "heaps", pat: "Ladders for largest jumps heap" },
+  { d: 110, t: "502. IPO", p: "LeetCode", u: "https://leetcode.com/problems/ipo/", diff: "Hard", st: "heaps", pat: "Capital min-heap + profit max-heap" },
+
+  // Stage 6: Trees, BST & Tries (Days 111-135)
+  { d: 111, t: "144. Binary Tree Preorder Traversal", p: "LeetCode", u: "https://leetcode.com/problems/binary-tree-preorder-traversal/", diff: "Easy", st: "trees", pat: "Root-Left-Right recursive/iterative" },
+  { d: 112, t: "94. Binary Tree Inorder Traversal", p: "LeetCode", u: "https://leetcode.com/problems/binary-tree-inorder-traversal/", diff: "Easy", st: "trees", pat: "Left-Root-Right (Sorted order for BST)" },
+  { d: 113, t: "145. Binary Tree Postorder Traversal", p: "LeetCode", u: "https://leetcode.com/problems/binary-tree-postorder-traversal/", diff: "Easy", st: "trees", pat: "Left-Right-Root bottom-up processing" },
+  { d: 114, t: "102. Binary Tree Level Order Traversal", p: "LeetCode", u: "https://leetcode.com/problems/binary-tree-level-order-traversal/", diff: "Medium", st: "trees", pat: "BFS Queue level-by-level" },
+  { d: 115, t: "104. Maximum Depth of Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/maximum-depth-of-binary-tree/", diff: "Easy", st: "trees", pat: "1 + max(left, right)" },
+  { d: 116, t: "543. Diameter of Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/diameter-of-binary-tree/", diff: "Easy", st: "trees", pat: "Global max path update during height" },
+  { d: 117, t: "110. Balanced Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/balanced-binary-tree/", diff: "Easy", st: "trees", pat: "Height difference <= 1" },
+  { d: 118, t: "101. Symmetric Tree", p: "LeetCode", u: "https://leetcode.com/problems/symmetric-tree/", diff: "Easy", st: "trees", pat: "Mirror recursion (t1.left == t2.right)" },
+  { d: 119, t: "226. Invert Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/invert-binary-tree/", diff: "Easy", st: "trees", pat: "Recursive child pointer swap" },
+  { d: 120, t: "103. Binary Tree Zigzag Level Order", p: "LeetCode", u: "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/", diff: "Medium", st: "trees", pat: "BFS with alternating level reversal" },
+  { d: 121, t: "199. Binary Tree Right Side View", p: "LeetCode", u: "https://leetcode.com/problems/binary-tree-right-side-view/", diff: "Medium", st: "trees", pat: "Level order rightmost / Reverse pre-order" },
+  { d: 122, t: "987. Vertical Order Traversal of Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/", diff: "Hard", st: "trees", pat: "Coordinates (row, col) + Multiset sorting" },
+  { d: 123, t: "236. Lowest Common Ancestor of Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/", diff: "Medium", st: "trees", pat: "Subtree existence propagation" },
+  { d: 124, t: "112. Path Sum", p: "LeetCode", u: "https://leetcode.com/problems/path-sum/", diff: "Easy", st: "trees", pat: "Leaf target deduction" },
+  { d: 125, t: "124. Binary Tree Maximum Path Sum", p: "LeetCode", u: "https://leetcode.com/problems/binary-tree-maximum-path-sum/", diff: "Hard", st: "trees", pat: "Non-negative branch contribution" },
+  { d: 126, t: "105. Construct Tree from Preorder & Inorder", p: "LeetCode", u: "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/", diff: "Medium", st: "trees", pat: "Preorder root + Inorder left/right partitions" },
+  { d: 127, t: "863. All Nodes Distance K in Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/", diff: "Medium", st: "trees", pat: "Parent pointers graph conversion + BFS" },
+  { d: 128, t: "297. Serialize and Deserialize Binary Tree", p: "LeetCode", u: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", diff: "Hard", st: "trees", pat: "Preorder string tokenization" },
+  { d: 129, t: "98. Validate Binary Search Tree", p: "LeetCode", u: "https://leetcode.com/problems/validate-binary-search-tree/", diff: "Medium", st: "trees", pat: "Range propagation (min, max)" },
+  { d: 130, t: "230. Kth Smallest Element in a BST", p: "LeetCode", u: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/", diff: "Medium", st: "trees", pat: "Inorder traversal countdown" },
+  { d: 131, t: "235. Lowest Common Ancestor of a BST", p: "LeetCode", u: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/", diff: "Medium", st: "trees", pat: "BST value divergence split" },
+  { d: 132, t: "450. Delete Node in a BST", p: "LeetCode", u: "https://leetcode.com/problems/delete-node-in-a-bst/", diff: "Medium", st: "trees", pat: "Inorder successor replacement" },
+  { d: 133, t: "108. Convert Sorted Array to BST", p: "LeetCode", u: "https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/", diff: "Easy", st: "trees", pat: "Mid-element balanced root" },
+  { d: 134, t: "208. Implement Trie (Prefix Tree)", p: "LeetCode", u: "https://leetcode.com/problems/implement-trie-prefix-tree/", diff: "Medium", st: "trees", pat: "26-ary tree node structure" },
+  { d: 135, t: "211. Design Add and Search Words Data Structure", p: "LeetCode", u: "https://leetcode.com/problems/design-add-and-search-words-data-structure/", diff: "Medium", st: "trees", pat: "Trie with wildcard '.' DFS" },
+
+  // Stage 7: Recursion & Backtracking (Days 136-150)
+  { d: 136, t: "78. Subsets (Power Set)", p: "LeetCode", u: "https://leetcode.com/problems/subsets/", diff: "Medium", st: "backtrack", pat: "Pick / Not-Pick decision tree" },
+  { d: 137, t: "90. Subsets II (With Duplicates)", p: "LeetCode", u: "https://leetcode.com/problems/subsets-ii/", diff: "Medium", st: "backtrack", pat: "Sort & skip adjacent branch" },
+  { d: 138, t: "46. Permutations", p: "LeetCode", u: "https://leetcode.com/problems/permutations/", diff: "Medium", st: "backtrack", pat: "Element swap or used array" },
+  { d: 139, t: "47. Permutations II", p: "LeetCode", u: "https://leetcode.com/problems/permutations-ii/", diff: "Medium", st: "backtrack", pat: "Frequency map backtracking" },
+  { d: 140, t: "77. Combinations", p: "LeetCode", u: "https://leetcode.com/problems/combinations/", diff: "Medium", st: "backtrack", pat: "Size k depth pruning" },
+  { d: 141, t: "39. Combination Sum", p: "LeetCode", u: "https://leetcode.com/problems/combination-sum/", diff: "Medium", st: "backtrack", pat: "Unlimited reuse of elements" },
+  { d: 142, t: "40. Combination Sum II", p: "LeetCode", u: "https://leetcode.com/problems/combination-sum-ii/", diff: "Medium", st: "backtrack", pat: "Single-use with duplicate pruning" },
+  { d: 143, t: "17. Letter Combinations of a Phone Number", p: "LeetCode", u: "https://leetcode.com/problems/letter-combinations-of-a-phone-number/", diff: "Medium", st: "backtrack", pat: "Digit-char string concatenation" },
+  { d: 144, t: "22. Generate Parentheses", p: "LeetCode", u: "https://leetcode.com/problems/generate-parentheses/", diff: "Medium", st: "backtrack", pat: "Open < n, Close < Open rules" },
+  { d: 145, t: "131. Palindrome Partitioning", p: "LeetCode", u: "https://leetcode.com/problems/palindrome-partitioning/", diff: "Medium", st: "backtrack", pat: "Substring palindrome check + DFS" },
+  { d: 146, t: "79. Word Search", p: "LeetCode", u: "https://leetcode.com/problems/word-search/", diff: "Medium", st: "backtrack", pat: "Grid DFS with visited backtracking" },
+  { d: 147, t: "93. Restore IP Addresses", p: "LeetCode", u: "https://leetcode.com/problems/restore-ip-addresses/", diff: "Medium", st: "backtrack", pat: "4-segment integer boundary pruning" },
+  { d: 148, t: "51. N-Queens", p: "LeetCode", u: "https://leetcode.com/problems/n-queens/", diff: "Hard", st: "backtrack", pat: "Diagonal & Column hashing bitmask" },
+  { d: 149, t: "37. Sudoku Solver", p: "LeetCode", u: "https://leetcode.com/problems/sudoku-solver/", diff: "Hard", st: "backtrack", pat: "Cell validation 3x3 block check" },
+  { d: 150, t: "212. Word Search II", p: "LeetCode", u: "https://leetcode.com/problems/word-search-ii/", diff: "Hard", st: "backtrack", pat: "Trie prefix pruning + Grid DFS" },
+
+  // Stage 8: Graphs & Shortest Path (Days 151-175)
+  { d: 151, t: "BFS Traversal of Graph", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/bfs-traversal-of-graph/1", diff: "Easy", st: "graphs", pat: "Queue + Visited array" },
+  { d: 152, t: "DFS Traversal of Graph", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/depth-first-traversal-for-a-graph/1", diff: "Easy", st: "graphs", pat: "Recursion call stack traversal" },
+  { d: 153, t: "547. Number of Provinces", p: "LeetCode", u: "https://leetcode.com/problems/number-of-provinces/", diff: "Medium", st: "graphs", pat: "Connected components counting" },
+  { d: 154, t: "200. Number of Islands", p: "LeetCode", u: "https://leetcode.com/problems/number-of-islands/", diff: "Medium", st: "graphs", pat: "2D Grid Floodfill traversal" },
+  { d: 155, t: "695. Max Area of Island", p: "LeetCode", u: "https://leetcode.com/problems/max-area-of-island/", diff: "Medium", st: "graphs", pat: "Area aggregation during DFS" },
+  { d: 156, t: "733. Flood Fill", p: "LeetCode", u: "https://leetcode.com/problems/flood-fill/", diff: "Easy", st: "graphs", pat: "Color replacement DFS" },
+  { d: 157, t: "994. Rotting Oranges", p: "LeetCode", u: "https://leetcode.com/problems/rotting-oranges/", diff: "Medium", st: "graphs", pat: "Multi-Source BFS propagation" },
+  { d: 158, t: "542. 01 Matrix", p: "LeetCode", u: "https://leetcode.com/problems/01-matrix/", diff: "Medium", st: "graphs", pat: "Reverse BFS distance from zeroes" },
+  { d: 159, t: "130. Surrounded Regions", p: "LeetCode", u: "https://leetcode.com/problems/surrounded-regions/", diff: "Medium", st: "graphs", pat: "Boundary connected component preservation" },
+  { d: 160, t: "Detect Cycle in Undirected Graph", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1", diff: "Medium", st: "graphs", pat: "Parent pointer check in BFS/DFS" },
+  { d: 161, t: "Detect Cycle in Directed Graph", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1", diff: "Medium", st: "graphs", pat: "Path visited recursion stack / Kahn's" },
+  { d: 162, t: "785. Is Graph Bipartite?", p: "LeetCode", u: "https://leetcode.com/problems/is-graph-bipartite/", diff: "Medium", st: "graphs", pat: "2-coloring with BFS/DFS" },
+  { d: 163, t: "207. Course Schedule", p: "LeetCode", u: "https://leetcode.com/problems/course-schedule/", diff: "Medium", st: "graphs", pat: "Cycle detection in dependency DAG" },
+  { d: 164, t: "210. Course Schedule II", p: "LeetCode", u: "https://leetcode.com/problems/course-schedule-ii/", diff: "Medium", st: "graphs", pat: "Kahn's Algorithm (in-degree array)" },
+  { d: 165, t: "310. Minimum Height Trees", p: "LeetCode", u: "https://leetcode.com/problems/minimum-height-trees/", diff: "Medium", st: "graphs", pat: "Leaf trimming topological centroid" },
+  { d: 166, t: "Alien Dictionary", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/alien-dictionary/1", diff: "Hard", st: "graphs", pat: "Character precedence DAG + Topo Sort" },
+  { d: 167, t: "Dijkstra's Shortest Path Algorithm", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1", diff: "Medium", st: "graphs", pat: "Min-Heap priority relaxation" },
+  { d: 168, t: "743. Network Delay Time", p: "LeetCode", u: "https://leetcode.com/problems/network-delay-time/", diff: "Medium", st: "graphs", pat: "Dijkstra single source max distance" },
+  { d: 169, t: "1514. Path with Maximum Probability", p: "LeetCode", u: "https://leetcode.com/problems/path-with-maximum-probability/", diff: "Medium", st: "graphs", pat: "Max-Heap probability relaxation" },
+  { d: 170, t: "1631. Path With Minimum Effort", p: "LeetCode", u: "https://leetcode.com/problems/path-with-minimum-effort/", diff: "Medium", st: "graphs", pat: "Dijkstra on grid height differences" },
+  { d: 171, t: "787. Cheapest Flights Within K Stops", p: "LeetCode", u: "https://leetcode.com/problems/cheapest-flights-within-k-stops/", diff: "Medium", st: "graphs", pat: "Bellman-Ford / BFS stops limitation" },
+  { d: 172, t: "Disjoint Set Union (Union by Rank & Path Compression)", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/disjoint-set-union-find/1", diff: "Medium", st: "graphs", pat: "O(α(N)) dynamic connectivity" },
+  { d: 173, t: "684. Redundant Connection", p: "LeetCode", u: "https://leetcode.com/problems/redundant-connection/", diff: "Medium", st: "graphs", pat: "Cycle edge identification with DSU" },
+  { d: 174, t: "1319. Number of Operations to Make Network Connected", p: "LeetCode", u: "https://leetcode.com/problems/number-of-operations-to-make-network-connected/", diff: "Medium", st: "graphs", pat: "Extra edges vs component count" },
+  { d: 175, t: "1584. Min Cost to Connect All Points", p: "LeetCode", u: "https://leetcode.com/problems/min-cost-to-connect-all-points/", diff: "Medium", st: "graphs", pat: "Kruskal's / Prim's MST" },
+
+  // Stage 9: Dynamic Programming Mastery (Days 176-210)
+  { d: 176, t: "70. Climbing Stairs", p: "LeetCode", u: "https://leetcode.com/problems/climbing-stairs/", diff: "Easy", st: "dp", pat: "1D DP state transition · dp[i] = dp[i-1] + dp[i-2]" },
+  { d: 177, t: "746. Min Cost Climbing Stairs", p: "LeetCode", u: "https://leetcode.com/problems/min-cost-climbing-stairs/", diff: "Easy", st: "dp", pat: "Min of 1 or 2 steps cost" },
+  { d: 178, t: "198. House Robber", p: "LeetCode", u: "https://leetcode.com/problems/house-robber/", diff: "Medium", st: "dp", pat: "Non-adjacent max sum pattern" },
+  { d: 179, t: "213. House Robber II", p: "LeetCode", u: "https://leetcode.com/problems/house-robber-ii/", diff: "Medium", st: "dp", pat: "Circular array two-run trick" },
+  { d: 180, t: "300. Longest Increasing Subsequence (LIS)", p: "LeetCode", u: "https://leetcode.com/problems/longest-increasing-subsequence/", diff: "Medium", st: "dp", pat: "O(N^2) DP or O(N log N) patience sort" },
+  { d: 181, t: "0/1 Knapsack Problem", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1", diff: "Medium", st: "dp", pat: "Capacity vs Item Pick/Skip DP" },
+  { d: 182, t: "416. Partition Equal Subset Sum", p: "LeetCode", u: "https://leetcode.com/problems/partition-equal-subset-sum/", diff: "Medium", st: "dp", pat: "Target sum = Total / 2 subset sum" },
+  { d: 183, t: "494. Target Sum", p: "LeetCode", u: "https://leetcode.com/problems/target-sum/", diff: "Medium", st: "dp", pat: "Subset sum difference reduction" },
+  { d: 184, t: "322. Coin Change (Min Coins)", p: "LeetCode", u: "https://leetcode.com/problems/coin-change/", diff: "Medium", st: "dp", pat: "Unbounded knapsack min count" },
+  { d: 185, t: "518. Coin Change II (Total Ways)", p: "LeetCode", u: "https://leetcode.com/problems/coin-change-ii/", diff: "Medium", st: "dp", pat: "Unbounded knapsack combination tally" },
+  { d: 186, t: "Rod Cutting Problem", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/rod-cutting0840/1", diff: "Medium", st: "dp", pat: "Length partition profit maximization" },
+  { d: 187, t: "1143. Longest Common Subsequence (LCS)", p: "LeetCode", u: "https://leetcode.com/problems/longest-common-subsequence/", diff: "Medium", st: "dp", pat: "2D Grid match/mismatch transition" },
+  { d: 188, t: "Longest Common Substring", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/longest-common-substring1449/1", diff: "Medium", st: "dp", pat: "Reset count on mismatch" },
+  { d: 189, t: "72. Edit Distance", p: "LeetCode", u: "https://leetcode.com/problems/edit-distance/", diff: "Medium", st: "dp", pat: "Insert, Delete, Replace min cost" },
+  { d: 190, t: "583. Delete Operation for Two Strings", p: "LeetCode", u: "https://leetcode.com/problems/delete-operation-for-two-strings/", diff: "Medium", st: "dp", pat: "Length - 2 * LCS" },
+  { d: 191, t: "516. Longest Palindromic Subsequence", p: "LeetCode", u: "https://leetcode.com/problems/longest-palindromic-subsequence/", diff: "Medium", st: "dp", pat: "LCS(s, reverse(s))" },
+  { d: 192, t: "1092. Shortest Common Supersequence", p: "LeetCode", u: "https://leetcode.com/problems/shortest-common-supersequence/", diff: "Hard", st: "dp", pat: "LCS back-tracking reconstruction" },
+  { d: 193, t: "62. Unique Paths", p: "LeetCode", u: "https://leetcode.com/problems/unique-paths/", diff: "Medium", st: "dp", pat: "Grid right/down path combinatorics" },
+  { d: 194, t: "63. Unique Paths II (Obstacles)", p: "LeetCode", u: "https://leetcode.com/problems/unique-paths-ii/", diff: "Medium", st: "dp", pat: "Zero out blocked grid coordinates" },
+  { d: 195, t: "64. Minimum Path Sum", p: "LeetCode", u: "https://leetcode.com/problems/minimum-path-sum/", diff: "Medium", st: "dp", pat: "Min of top and left accumulated cell" },
+  { d: 196, t: "120. Triangle", p: "LeetCode", u: "https://leetcode.com/problems/triangle/", diff: "Medium", st: "dp", pat: "Bottom-up reduction" },
+  { d: 197, t: "931. Minimum Falling Path Sum", p: "LeetCode", u: "https://leetcode.com/problems/minimum-falling-path-sum/", diff: "Medium", st: "dp", pat: "3 adjacent predecessor transitions" },
+  { d: 198, t: "121. Best Time to Buy and Sell Stock", p: "LeetCode", u: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", diff: "Easy", st: "dp", pat: "Track running minimum price" },
+  { d: 199, t: "122. Best Time to Buy and Sell Stock II", p: "LeetCode", u: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/", diff: "Medium", st: "dp", pat: "Greedy sum of all upward slopes" },
+  { d: 200, t: "309. Best Time Buy/Sell with Cooldown", p: "LeetCode", u: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/", diff: "Medium", st: "dp", pat: "State Machine DP (Buy, Sell, Rest)" },
+  { d: 201, t: "1186. Maximum Subarray Sum with One Deletion", p: "LeetCode", u: "https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/", diff: "Medium", st: "dp", pat: "Two state arrays (deleted, not deleted)" },
+  { d: 202, t: "139. Word Break", p: "LeetCode", u: "https://leetcode.com/problems/word-break/", diff: "Medium", st: "dp", pat: "Prefix boolean validation" },
+  { d: 203, t: "132. Palindrome Partitioning II", p: "LeetCode", u: "https://leetcode.com/problems/palindrome-partitioning-ii/", diff: "Hard", st: "dp", pat: "1D DP with palindrome precomputation" },
+  { d: 204, t: "Matrix Chain Multiplication (MCM)", p: "GFG", u: "https://practice.geeksforgeeks.org/problems/matrix-chain-multiplication0303/1", diff: "Hard", st: "dp", pat: "Interval DP · loop over chain length" },
+  { d: 205, t: "312. Burst Balloons", p: "LeetCode", u: "https://leetcode.com/problems/burst-balloons/", diff: "Hard", st: "dp", pat: "Reverse interval DP (last balloon burst)" },
+  { d: 206, t: "1547. Minimum Cost to Cut a Stick", p: "LeetCode", u: "https://leetcode.com/problems/minimum-cost-to-cut-a-stick/", diff: "Hard", st: "dp", pat: "Sort cut points + interval memoization" },
+  { d: 207, t: "10. Regular Expression Matching", p: "LeetCode", u: "https://leetcode.com/problems/regular-expression-matching/", diff: "Hard", st: "dp", pat: "Wildcard * 0-or-more branches" },
+  { d: 208, t: "44. Wildcard Matching", p: "LeetCode", u: "https://leetcode.com/problems/wildcard-matching/", diff: "Hard", st: "dp", pat: "Wildcard * matches any sequence" },
+  { d: 209, t: "1235. Maximum Profit in Job Scheduling", p: "LeetCode", u: "https://leetcode.com/problems/maximum-profit-in-job-scheduling/", diff: "Hard", st: "dp", pat: "DP + Binary Search for non-overlapping" },
+  { d: 210, t: "338. Counting Bits", p: "LeetCode", u: "https://leetcode.com/problems/counting-bits/", diff: "Easy", st: "dp", pat: "dp[i] = dp[i >> 1] + (i & 1)" },
+
+  // Stage 10: Bit Manipulation, Greedy & ML Math (Days 211-230+)
+  { d: 211, t: "136. Single Number", p: "LeetCode", u: "https://leetcode.com/problems/single-number/", diff: "Easy", st: "bit_ml", pat: "XOR self-cancellation property" },
+  { d: 212, t: "191. Number of 1 Bits", p: "LeetCode", u: "https://leetcode.com/problems/number-of-1-bits/", diff: "Easy", st: "bit_ml", pat: "Brian Kernighan's (n & n-1)" },
+  { d: 213, t: "190. Reverse Bits", p: "LeetCode", u: "https://leetcode.com/problems/reverse-bits/", diff: "Easy", st: "bit_ml", pat: "Bit shift & mask loop" },
+  { d: 214, t: "137. Single Number II", p: "LeetCode", u: "https://leetcode.com/problems/single-number-ii/", diff: "Medium", st: "bit_ml", pat: "Bitwise modulo 3 counter" },
+  { d: 215, t: "260. Single Number III", p: "LeetCode", u: "https://leetcode.com/problems/single-number-iii/", diff: "Medium", st: "bit_ml", pat: "Rightmost set bit group partitioning" },
+  { d: 216, t: "201. Bitwise AND of Numbers Range", p: "LeetCode", u: "https://leetcode.com/problems/bitwise-and-of-numbers-range/", diff: "Medium", st: "bit_ml", pat: "Common binary prefix shift" },
+  { d: 217, t: "371. Sum of Two Integers without +", p: "LeetCode", u: "https://leetcode.com/problems/sum-of-two-integers/", diff: "Medium", st: "bit_ml", pat: "Half-adder XOR & carry shift" },
+  { d: 218, t: "78. Subsets using Bitmask", p: "LeetCode", u: "https://leetcode.com/problems/subsets/", diff: "Medium", st: "bit_ml", pat: "Iterate 0 to 2^N - 1 bit flags" },
+  { d: 219, t: "455. Assign Cookies", p: "LeetCode", u: "https://leetcode.com/problems/assign-cookies/", diff: "Easy", st: "bit_ml", pat: "Greedy two pointer matching" },
+  { d: 220, t: "55. Jump Game", p: "LeetCode", u: "https://leetcode.com/problems/jump-game/", diff: "Medium", st: "bit_ml", pat: "Max reachable index boundary" },
+  { d: 221, t: "45. Jump Game II", p: "LeetCode", u: "https://leetcode.com/problems/jump-game-ii/", diff: "Medium", st: "bit_ml", pat: "BFS level jumping interval" },
+  { d: 222, t: "56. Merge Intervals", p: "LeetCode", u: "https://leetcode.com/problems/merge-intervals/", diff: "Medium", st: "bit_ml", pat: "Sort by start & expand end" },
+  { d: 223, t: "435. Non-overlapping Intervals", p: "LeetCode", u: "https://leetcode.com/problems/non-overlapping-intervals/", diff: "Medium", st: "bit_ml", pat: "Greedy earliest end time selection" },
+  { d: 224, t: "134. Gas Station", p: "LeetCode", u: "https://leetcode.com/problems/gas-station/", diff: "Medium", st: "bit_ml", pat: "Circular greedy starting index" },
+  { d: 225, t: "204. Count Primes (Sieve of Eratosthenes)", p: "LeetCode", u: "https://leetcode.com/problems/count-primes/", diff: "Medium", st: "bit_ml", pat: "O(N log log N) boolean sieve" },
+  { d: 226, t: "1071. Greatest Common Divisor of Strings", p: "LeetCode", u: "https://leetcode.com/problems/greatest-common-divisor-of-strings/", diff: "Easy", st: "bit_ml", pat: "Euclidean GCD algorithm" },
+  { d: 227, t: "118. Pascal's Triangle", p: "LeetCode", u: "https://leetcode.com/problems/pascals-triangle/", diff: "Easy", st: "bit_ml", pat: "Combinatorics nCr triangle" },
+  { d: 228, t: "172. Factorial Trailing Zeroes", p: "LeetCode", u: "https://leetcode.com/problems/factorial-trailing-zeroes/", diff: "Medium", st: "bit_ml", pat: "Legendres formula: count factors of 5" },
+  { d: 229, t: "Vectorized Matrix Multiplication & Transpose", p: "Python", u: "https://github.com", diff: "Medium", st: "bit_ml", pat: "Linear Algebra for ML · O(N^3) vs BLAS" },
+  { d: 230, t: "Gradient Descent Optimization from Scratch", p: "Python", u: "https://github.com", diff: "Medium", st: "bit_ml", pat: "Calculus & Loss optimization for Deep Learning" }
+];
+
+/* ==========================================================================
+   Application State & Persistence
+   ========================================================================== */
+
+const STORAGE_KEY = "dsa_master_tracker_v2";
+
+let state = {
+  problems: [],
+  solved: {},     // { [day]: timestamp }
+  starred: {},    // { [day]: boolean }
+  notes: {},      // { [day]: string }
+  streak: 0,
+  lastSolvedDate: null
+};
+
+let currentDiffFilter = "all";
+let currentStatusFilter = "all";
+let currentStageFilter = "all";
+
+function initApp() {
+  loadFromStorage();
+  populateStageSelect();
+  renderStageTabs();
+  updateStreak();
+  render();
+}
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state.solved = parsed.solved || {};
+      state.starred = parsed.starred || {};
+      state.notes = parsed.notes || {};
+      state.streak = parsed.streak || 0;
+      state.lastSolvedDate = parsed.lastSolvedDate || null;
+      // Merge initial problems with any custom added problems
+      const customOnes = (parsed.customProblems || []);
+      const merged = [...INITIAL_PROBLEMS];
+      customOnes.forEach(c => {
+        if (!merged.some(m => m.d === c.d)) {
+          merged.push(c);
+        }
+      });
+      merged.sort((a, b) => a.d - b.d);
+      state.problems = merged;
+    } else {
+      state.problems = [...INITIAL_PROBLEMS];
+    }
+  } catch (e) {
+    console.error("Storage load error", e);
+    state.problems = [...INITIAL_PROBLEMS];
+  }
+}
+
+function saveToStorage() {
+  try {
+    const customOnes = state.problems.filter(p => p.isCustom);
+    const toSave = {
+      solved: state.solved,
+      starred: state.starred,
+      notes: state.notes,
+      streak: state.streak,
+      lastSolvedDate: state.lastSolvedDate,
+      customProblems: customOnes
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+  } catch (e) {
+    console.error("Storage save error", e);
+  }
+}
+
+/* ==========================================================================
+   Streak Logic
+   ========================================================================== */
+function getTodayString() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function getYesterdayString() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function updateStreak() {
+  const today = getTodayString();
+  const yesterday = getYesterdayString();
+
+  if (!state.lastSolvedDate) {
+    state.streak = 0;
+    return;
+  }
+
+  // If last solved was neither today nor yesterday, streak broke
+  if (state.lastSolvedDate !== today && state.lastSolvedDate !== yesterday) {
+    state.streak = 0;
+  }
+}
+
+function registerSolveDate() {
+  const today = getTodayString();
+  const yesterday = getYesterdayString();
+
+  if (state.lastSolvedDate === today) {
+    // Already credited today
+    return;
+  }
+
+  if (state.lastSolvedDate === yesterday) {
+    state.streak += 1;
+  } else {
+    state.streak = 1;
+  }
+  state.lastSolvedDate = today;
+  saveToStorage();
+}
+
+/* ==========================================================================
+   Rendering & UI Updates
+   ========================================================================== */
+
+function populateStageSelect() {
+  const sel = document.getElementById("custom-stage");
+  sel.innerHTML = "";
+  STAGES.filter(s => s.id !== "all").forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s.id;
+    opt.textContent = s.name;
+    sel.appendChild(opt);
+  });
+}
+
+function renderStageTabs() {
+  const container = document.getElementById("stage-tabs");
+  container.innerHTML = "";
+  STAGES.forEach(st => {
+    const btn = document.createElement("button");
+    btn.className = `stage-tab ${currentStageFilter === st.id ? 'active' : ''}`;
+    btn.textContent = st.name;
+    btn.onclick = () => {
+      currentStageFilter = st.id;
+      renderStageTabs();
+      render();
+    };
+    container.appendChild(btn);
+  });
+}
+
+let searchDebounceTimer = null;
+function handleSearchInput() {
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => {
+    render();
+  }, 120);
+}
+
+function render() {
+  const q = document.getElementById("search-input").value.trim().toLowerCase();
+  const listEl = document.getElementById("question-list");
+  const countEl = document.getElementById("result-count");
+
+  // Filter problems
+  const filtered = state.problems.filter(p => {
+    const isSolved = !!state.solved[p.d];
+    const isStarred = !!state.starred[p.d];
+
+    // Difficulty filter
+    if (currentDiffFilter !== "all" && p.diff !== currentDiffFilter) return false;
+
+    // Status filter
+    if (currentStatusFilter === "solved" && !isSolved) return false;
+    if (currentStatusFilter === "unsolved" && isSolved) return false;
+    if (currentStatusFilter === "starred" && !isStarred) return false;
+
+    // Stage filter
+    if (currentStageFilter !== "all" && p.st !== currentStageFilter) return false;
+
+    // Search query
+    if (q) {
+      const matchDay = `day ${p.d}`.includes(q) || `d${p.d}` === q;
+      const matchTitle = p.t.toLowerCase().includes(q);
+      const matchPat = (p.pat || "").toLowerCase().includes(q);
+      const matchPlat = (p.p || "").toLowerCase().includes(q);
+      if (!matchDay && !matchTitle && !matchPat && !matchPlat) return false;
+    }
+
+    return true;
+  });
+
+  countEl.textContent = `Showing ${filtered.length} of ${state.problems.length} problems`;
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = `<div class="empty-state">No matching problems found. Try changing filters or search keywords.</div>`;
+  } else {
+    listEl.innerHTML = filtered.map(p => createQuestionCardHTML(p)).join("");
+  }
+
+  updateStatsAndHero();
+}
+
+function createQuestionCardHTML(p) {
+  const isDone = !!state.solved[p.d];
+  const isStar = !!state.starred[p.d];
+  const notesText = state.notes[p.d] || "";
+  const hasNotes = notesText.trim().length > 0;
+  const isSem3 = p.st.startsWith("sem3");
+
+  const diffClass = p.diff === "Easy" ? "badge-easy" : p.diff === "Medium" ? "badge-med" : "badge-hard";
+
+  return `
+    <div class="question-card ${isDone ? 'completed' : ''}" id="card-${p.d}">
+      <button class="check-btn ${isDone ? 'checked' : ''}" onclick="toggleSolved(${p.d})" title="Mark complete">
+        ${isDone ? '✓' : ''}
+      </button>
+
+      <span class="day-badge">DAY ${p.d}</span>
+
+      <div class="question-content">
+        <div class="question-title-row">
+          <a href="${p.u}" target="_blank" rel="noopener noreferrer" class="question-link" style="${isDone ? 'text-decoration: line-through;' : ''}">
+            ${escapeHtml(p.t)}
+          </a>
+          <span class="badge ${diffClass}">${p.diff}</span>
+          <span class="badge badge-plat">${p.p}</span>
+          ${isSem3 ? `<span class="badge badge-sem3">Sem 3 Exam</span>` : ''}
+        </div>
+        <div class="question-sub">
+          <span>${escapeHtml(p.pat || "")}</span>
+        </div>
+
+        <!-- In-card notes drawer -->
+        <div class="notes-drawer" id="notes-drawer-${p.d}">
+          <textarea class="notes-textarea" id="notes-text-${p.d}" placeholder="Write intuition, approach, time/space complexity notes...">${escapeHtml(notesText)}</textarea>
+          <div class="notes-footer">
+            <button class="btn" style="font-size: 11px; padding: 4px 8px;" onclick="toggleNotesDrawer(${p.d})">Close</button>
+            <button class="btn btn-primary" style="font-size: 11px; padding: 4px 10px;" onclick="saveProblemNotes(${p.d})">Save Note</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="action-icon ${hasNotes ? 'has-notes' : ''}" onclick="toggleNotesDrawer(${p.d})" title="Approach Notes">
+        📝
+      </button>
+
+      <button class="action-icon ${isStar ? 'starred' : ''}" onclick="toggleStar(${p.d})" title="Revision Bookmark">
+        ${isStar ? '★' : '☆'}
+      </button>
+    </div>
+  `;
+}
+
+function updateStatsAndHero() {
+  const total = state.problems.length;
+  const solvedCount = Object.keys(state.solved).length;
+  const pct = total > 0 ? Math.round((solvedCount / total) * 100) : 0;
+
+  // Sem 3 Count
+  const sem3Probs = state.problems.filter(p => p.st && p.st.startsWith("sem3"));
+  const sem3Solved = sem3Probs.filter(p => state.solved[p.d]).length;
+
+  const starCount = Object.keys(state.starred).length;
+
+  // DOM Stats
+  document.getElementById("stat-streak").textContent = state.streak;
+  document.getElementById("stat-last-solved").textContent = state.lastSolvedDate 
+    ? `Last active: ${state.lastSolvedDate}` 
+    : `No activity recorded yet`;
+
+  document.getElementById("stat-solved").textContent = `${solvedCount} / ${total}`;
+  document.getElementById("stat-ratio").textContent = `${pct}% Complete`;
+  document.getElementById("stat-sem3").textContent = `${sem3Solved} / ${sem3Probs.length}`;
+  document.getElementById("stat-revision").textContent = starCount;
+
+  document.getElementById("progress-pct-label").textContent = `${pct}%`;
+  document.getElementById("progress-fill").style.width = `${pct}%`;
+
+  // Update Today's Hero Mission: Pick first unsolved problem or current day
+  const nextMission = state.problems.find(p => !state.solved[p.d]) || state.problems[state.problems.length - 1];
+
+  if (nextMission) {
+    const isDone = !!state.solved[nextMission.d];
+    document.getElementById("today-title").innerHTML = `
+      <span>Day ${nextMission.d}: ${escapeHtml(nextMission.t)}</span>
+      <span class="badge ${nextMission.diff === 'Easy' ? 'badge-easy' : nextMission.diff === 'Medium' ? 'badge-med' : 'badge-hard'}">${nextMission.diff}</span>
+    `;
+    document.getElementById("today-desc").textContent = nextMission.pat 
+      ? `Pattern focus: ${nextMission.pat}. Strive for optimal time & space complexity before submitting.`
+      : "Solve today's target problem to maintain your daily streak.";
+
+    const launchBtn = document.getElementById("today-launch-btn");
+    launchBtn.href = nextMission.u;
+    launchBtn.textContent = `Solve on ${nextMission.p} ↗`;
+
+    const markBtn = document.getElementById("today-mark-btn");
+    markBtn.textContent = isDone ? "Marked as Done ✓" : "Mark as Done ✓";
+    markBtn.onclick = () => toggleSolved(nextMission.d);
+  }
+}
+
+/* ==========================================================================
+   Interactive Actions: Solved, Starred, Notes
+   ========================================================================== */
+
+function toggleSolved(day) {
+  if (state.solved[day]) {
+    delete state.solved[day];
+  } else {
+    state.solved[day] = Date.now();
+    registerSolveDate();
+  }
+  saveToStorage();
+  render();
+}
+
+function toggleStar(day) {
+  if (state.starred[day]) {
+    delete state.starred[day];
+  } else {
+    state.starred[day] = true;
+  }
+  saveToStorage();
+  render();
+}
+
+function toggleNotesDrawer(day) {
+  const drawer = document.getElementById(`notes-drawer-${day}`);
+  if (drawer) {
+    drawer.classList.toggle("open");
+  }
+}
+
+function saveProblemNotes(day) {
+  const textarea = document.getElementById(`notes-text-${day}`);
+  if (textarea) {
+    const val = textarea.value.trim();
+    if (val) {
+      state.notes[day] = val;
+    } else {
+      delete state.notes[day];
+    }
+    saveToStorage();
+    render();
+  }
+}
+
+function toggleTodayMission() {
+  const nextMission = state.problems.find(p => !state.solved[p.d]);
+  if (nextMission) {
+    toggleSolved(nextMission.d);
+  }
+}
+
+function jumpToNextUnsolved() {
+  const nextUnsolved = state.problems.find(p => !state.solved[p.d]);
+  if (nextUnsolved) {
+    const el = document.getElementById(`card-${nextUnsolved.d}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.borderColor = '#3b82f6';
+      setTimeout(() => { el.style.borderColor = ''; }, 1800);
+    }
+  }
+}
+
+/* ==========================================================================
+   Filters
+   ========================================================================== */
+
+function setDiffFilter(diff) {
+  currentDiffFilter = diff;
+  document.querySelectorAll("[data-diff]").forEach(el => {
+    el.classList.toggle("active", el.getAttribute("data-diff") === diff);
+  });
+  render();
+}
+
+function setStatusFilter(status) {
+  currentStatusFilter = status;
+  document.querySelectorAll("[data-status]").forEach(el => {
+    el.classList.toggle("active", el.getAttribute("data-status") === status);
+  });
+  render();
+}
+
+/* ==========================================================================
+   Add Custom Question Modal (Infinite Extensibility)
+   ========================================================================== */
+
+function openAddModal() {
+  const nextDay = state.problems.length > 0 ? Math.max(...state.problems.map(p => p.d)) + 1 : 1;
+  document.getElementById("custom-day").value = nextDay;
+  document.getElementById("custom-title").value = "";
+  document.getElementById("custom-url").value = "";
+  document.getElementById("custom-pattern").value = "";
+  document.getElementById("add-modal").classList.add("open");
+}
+
+function closeAddModal() {
+  document.getElementById("add-modal").classList.remove("open");
+}
+
+function saveCustomProblem() {
+  const d = parseInt(document.getElementById("custom-day").value, 10);
+  const t = document.getElementById("custom-title").value.trim();
+  const u = document.getElementById("custom-url").value.trim() || "#";
+  const p = document.getElementById("custom-plat").value;
+  const diff = document.getElementById("custom-diff").value;
+  const st = document.getElementById("custom-stage").value;
+  const pat = document.getElementById("custom-pattern").value.trim();
+
+  if (!d || !t) {
+    alert("Please enter a valid Day Number and Problem Title.");
+    return;
+  }
+
+  // Check if day already exists
+  const existingIdx = state.problems.findIndex(prob => prob.d === d);
+  const newObj = { d, t, u, p, diff, st, pat, isCustom: true };
+
+  if (existingIdx !== -1) {
+    state.problems[existingIdx] = newObj;
+  } else {
+    state.problems.push(newObj);
+  }
+
+  state.problems.sort((a, b) => a.d - b.d);
+  saveToStorage();
+  closeAddModal();
+  render();
+
+  // Scroll to new problem
+  setTimeout(() => {
+    const el = document.getElementById(`card-${d}`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 200);
+}
+
+/* ==========================================================================
+   Backup / Restore Engine
+   ========================================================================== */
+
+function openBackupModal() {
+  document.getElementById("backup-modal").classList.add("open");
+}
+
+function closeBackupModal() {
+  document.getElementById("backup-modal").classList.remove("open");
+}
+
+function exportData() {
+  const customOnes = state.problems.filter(p => p.isCustom);
+  const payload = {
+    app: "One Problem a Day DSA Master Tracker",
+    exportedAt: new Date().toISOString(),
+    solved: state.solved,
+    starred: state.starred,
+    notes: state.notes,
+    streak: state.streak,
+    lastSolvedDate: state.lastSolvedDate,
+    customProblems: customOnes
+  };
+
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `dsa-tracker-backup-${getTodayString()}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.solved) state.solved = data.solved;
+      if (data.starred) state.starred = data.starred;
+      if (data.notes) state.notes = data.notes;
+      if (data.streak !== undefined) state.streak = data.streak;
+      if (data.lastSolvedDate) state.lastSolvedDate = data.lastSolvedDate;
+
+      if (Array.isArray(data.customProblems)) {
+        const merged = [...INITIAL_PROBLEMS];
+        data.customProblems.forEach(c => {
+          if (!merged.some(m => m.d === c.d)) {
+            merged.push(c);
+          }
+        });
+        merged.sort((a, b) => a.d - b.d);
+        state.problems = merged;
+      }
+
+      saveToStorage();
+      alert("Progress successfully restored!");
+      closeBackupModal();
+      render();
+    } catch (err) {
+      alert("Invalid backup file: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetAllProgress() {
+  if (confirm("Are you sure you want to reset all progress, streaks, and bookmarks? This cannot be undone unless you exported a backup!")) {
+    state.solved = {};
+    state.starred = {};
+    state.notes = {};
+    state.streak = 0;
+    state.lastSolvedDate = null;
+    state.problems = [...INITIAL_PROBLEMS];
+    localStorage.removeItem(STORAGE_KEY);
+    saveToStorage();
+    closeBackupModal();
+    render();
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Boot
+window.onload = initApp;
+</script>
+</body>
+</html>

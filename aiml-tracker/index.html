@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI/ML Research Runway — Master Prep Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #06090e;
+      --bg-surface: #0d121d;
+      --bg-card: #121826;
+      --bg-card-hover: #172033;
+      --border-subtle: #1c263c;
+      --border-accent: #2d3b59;
+      --text-main: #e2e8f0;
+      --text-muted: #8c9cb5;
+      --text-dim: #50617c;
+      
+      --cyan: #06b6d4;
+      --cyan-dim: rgba(6, 182, 212, 0.12);
+      --cyan-glow: rgba(6, 182, 212, 0.3);
+      
+      --teal: #14b8a6;
+      --teal-dim: rgba(20, 184, 166, 0.12);
+      
+      --emerald: #10b981;
+      --emerald-dim: rgba(16, 185, 129, 0.12);
+      
+      --blue: #3b82f6;
+      --blue-dim: rgba(59, 130, 246, 0.12);
+      
+      --amber: #f59e0b;
+      --amber-dim: rgba(245, 158, 11, 0.12);
+      
+      --purple: #a855f7;
+      --purple-dim: rgba(168, 85, 247, 0.12);
+      
+      --rose: #f43f5e;
+      --rose-dim: rgba(244, 63, 94, 0.12);
+      
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      padding-bottom: 80px;
+    }
+
+    /* Ambient background glows */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -120px;
+      left: 15%;
+      width: 500px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: 0;
+      right: 5%;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Top Ecosystem Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .badge-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tag b { color: var(--text-main); }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+    .dot.cyan { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+    .dot.emerald { background: var(--emerald); box-shadow: 0 0 8px var(--emerald); }
+    .dot.amber { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-nav {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      text-decoration: none;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-nav:hover {
+      background: var(--bg-card);
+      border-color: var(--border-accent);
+      color: var(--text-main);
+    }
+    .btn-nav.active-link {
+      color: var(--cyan);
+      border-color: rgba(6, 182, 212, 0.4);
+      background: var(--cyan-dim);
+    }
+
+    /* Header */
+    .header-hero {
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      background: linear-gradient(120deg, #ffffff 40%, #a5f3fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtext {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.6;
+    }
+
+    /* KPI Stats Row */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .kpi-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-box::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--cyan);
+    }
+    .kpi-box.purple::after { background: var(--purple); }
+    .kpi-box.emerald::after { background: var(--emerald); }
+    .kpi-box.amber::after { background: var(--amber); }
+
+    .kpi-lbl {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .kpi-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+    .kpi-meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Overall Progress Bar */
+    .overall-progress-wrap {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 30px;
+    }
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .progress-track {
+      height: 8px;
+      background: #090e17;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--emerald));
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* View Switcher Tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 10px;
+      overflow-x: auto;
+    }
+    .tab-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-item:hover {
+      background: var(--bg-card);
+      border-color: var(--border-accent);
+      color: var(--text-main);
+    }
+    .tab-item.active {
+      background: var(--cyan-dim);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    /* Phase Card Layout */
+    .phase-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .phase-card:hover {
+      border-color: var(--border-accent);
+    }
+    .phase-card.is-current {
+      border-color: rgba(6, 182, 212, 0.45);
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.04) 0%, var(--bg-surface) 100%);
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.08);
+    }
+    .phase-card.is-blackout {
+      border-color: rgba(244, 63, 94, 0.35);
+      background: repeating-linear-gradient(135deg, rgba(244, 63, 94, 0.05), rgba(244, 63, 94, 0.05) 12px, rgba(244, 63, 94, 0.02) 12px, rgba(244, 63, 94, 0.02) 24px);
+    }
+
+    .phase-header {
+      padding: 18px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid transparent;
+    }
+    .phase-header.expanded {
+      border-bottom-color: var(--border-subtle);
+    }
+
+    .phase-info {}
+    .phase-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .phase-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-dim);
+    }
+    .phase-pill.current {
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+    .phase-pill.blackout {
+      background: var(--rose-dim);
+      color: var(--rose);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+    .phase-pill.done {
+      background: var(--emerald-dim);
+      color: var(--emerald);
+    }
+    .phase-dates {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
+    .phase-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+    .phase-blurb {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .phase-side-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .phase-progress-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--cyan);
+    }
+    .phase-mini-bar {
+      width: 90px;
+      height: 5px;
+      background: var(--border-subtle);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .phase-mini-fill {
+      height: 100%;
+      background: var(--cyan);
+      border-radius: 999px;
+    }
+    .toggle-icon {
+      font-size: 12px;
+      color: var(--text-dim);
+      transition: transform 0.2s;
+    }
+    .toggle-icon.expanded {
+      transform: rotate(180deg);
+    }
+
+    /* Phase Content Tasks */
+    .phase-body {
+      padding: 20px 22px;
+      display: none;
+    }
+    .phase-body.open {
+      display: block;
+    }
+
+    .benchmark-box {
+      background: #070a10;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .benchmark-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .benchmark-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .code-preview {
+      background: #030508;
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: #93c5fd;
+      overflow-x: auto;
+      line-height: 1.55;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 8px;
+    }
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .task-item:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: var(--border-accent);
+    }
+    .task-item.is-done {
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.03);
+    }
+
+    .task-checkbox {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border-accent);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .task-checkbox:hover {
+      border-color: var(--cyan);
+    }
+    .task-checkbox.checked {
+      background: var(--emerald);
+      border-color: var(--emerald);
+    }
+    .task-checkbox.checked::after {
+      content: '';
+      width: 9px;
+      height: 5px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+
+    .task-main {
+      flex: 1;
+    }
+    .task-title {
+      font-size: 13.5px;
+      color: var(--text-main);
+      line-height: 1.45;
+      font-weight: 500;
+    }
+    .task-item.is-done .task-title {
+      color: var(--text-dim);
+      text-decoration: line-through;
+    }
+    .task-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+
+    .task-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .btn-link-sm {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-link-sm:hover {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: var(--cyan);
+    }
+    .btn-note {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: all 0.15s;
+    }
+    .btn-note:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+    .btn-note.has-note {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: var(--amber-dim);
+    }
+
+    .task-note-view {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(245, 158, 11, 0.05);
+      border-left: 2px solid var(--amber);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #fed7aa;
+      font-style: italic;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 520px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .modal-head h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      color: var(--text-main);
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text-main); }
+    .modal-subtitle {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .modal-textarea {
+      width: 100%;
+      min-height: 120px;
+      background: #080c14;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+    }
+    .modal-textarea:focus {
+      border-color: var(--cyan);
+    }
+    .modal-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 7px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card);
+      color: var(--text-main);
+    }
+    .btn-primary {
+      background: var(--cyan);
+      border: none;
+      color: #04121a;
+      font-weight: 600;
+      padding: 7px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+
+    /* Footer Backup Toolbar */
+    .footer-bar {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
+    .footer-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-foot {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-foot:hover {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-color: var(--border-accent);
+    }
+    .btn-foot.danger:hover {
+      color: #f87171;
+      border-color: #7f1d1d;
+    }
+
+    input[type="file"] { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Top Ecosystem Bar -->
+  <div class="top-bar">
+    <div class="badge-bar">
+      <span class="tag"><span class="dot emerald"></span> CGPA: <b>9.2</b></span>
+      <span class="tag"><span class="dot cyan"></span> CCST: <b>982 / 1000</b> (Cleared)</span>
+      <span class="tag"><span class="dot amber"></span> Restart: <b>Sept 09, 2026</b></span>
+      <span class="tag">KRMU Session <b>2026–2027</b></span>
+    </div>
+    <div class="nav-actions">
+      <a href="../schedule-tracker.html" class="btn-nav">📅 Master Timetable</a>
+      <a href="../dsa-tracker/index.html" class="btn-nav">⚡ DSA Tracker</a>
+      <button class="btn-nav active-link">🧠 AI/ML Runway</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header-hero">
+    <div class="eyebrow">Top-Tier Research Track · B.Tech Semester 3</div>
+    <h1>AI/ML Research Runway</h1>
+    <p class="subtext">
+      Curated self-contained roadmap sequenced around your actual KRMU Academic Calendar. 
+      Python OOP &rarr; Linear Algebra & NumPy paired &rarr; Andrew Ng ML Specialization (Post-Midterms) &rarr; PyTorch Deep Learning Research sprint.
+    </p>
+  </div>
+
+  <!-- KPI Stats Row -->
+  <div class="kpi-row">
+    <div class="kpi-box">
+      <div class="kpi-lbl">Active Phase</div>
+      <div class="kpi-val" id="activePhaseTitle">Phase 1</div>
+      <div class="kpi-meta" id="activePhaseMeta">Python OOP (Sep 9–15)</div>
+    </div>
+    <div class="kpi-box emerald">
+      <div class="kpi-lbl">Completed Topics</div>
+      <div class="kpi-val" id="completedCount">0 / 28</div>
+      <div class="kpi-meta" id="completionPct">0% Complete</div>
+    </div>
+    <div class="kpi-box amber">
+      <div class="kpi-lbl">Daily Evening Slot</div>
+      <div class="kpi-val">07:05 – 08:05 PM</div>
+      <div class="kpi-meta">+ 3 hr Deep Saturday Block</div>
+    </div>
+    <div class="kpi-box purple">
+      <div class="kpi-lbl">Next Academic Blackout</div>
+      <div class="kpi-val">Oct 06 – 17</div>
+      <div class="kpi-meta">Mid-Terms (ML Pauses 100%)</div>
+    </div>
+  </div>
+
+  <!-- Overall Progress Bar -->
+  <div class="overall-progress-wrap">
+    <div class="progress-head">
+      <span>Roadmap Progress to AI/ML Research Readiness</span>
+      <span id="progressPercentNum">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="overallProgressBar" style="width: 0%;"></div>
+    </div>
+  </div>
+
+  <!-- Phase Filter Tabs -->
+  <div class="filter-tabs">
+    <button class="tab-item active" onclick="filterPhases('all')">All Phases (Full Roadmap)</button>
+    <button class="tab-item" onclick="filterPhases('current')">🎯 Active Phase</button>
+    <button class="tab-item" onclick="filterPhases('math')">📐 Math & NumPy</button>
+    <button class="tab-item" onclick="filterPhases('ml')">🤖 Andrew Ng ML</button>
+    <button class="tab-item" onclick="filterPhases('research')">🔬 Research Runway</button>
+    <button class="tab-item" onclick="filterPhases('blackout')">🛑 Exam Blackouts</button>
+  </div>
+
+  <!-- Phases Container -->
+  <div id="phasesList"></div>
+
+  <!-- Footer Toolbar -->
+  <div class="footer-bar">
+    <div class="footer-text">
+      Data persisted in browser localStorage · Offline ready · Zero dependencies
+    </div>
+    <div class="footer-actions">
+      <button class="btn-foot" onclick="exportData()">💾 Export Backup</button>
+      <button class="btn-foot" onclick="triggerImport()">📂 Import Backup</button>
+      <button class="btn-foot danger" onclick="resetProgress()">↺ Reset</button>
+      <input type="file" id="fileInput" accept=".json" onchange="handleImportFile(event)" />
+    </div>
+  </div>
+</div>
+
+<!-- Note Edit Modal -->
+<div class="modal-overlay hidden" id="noteModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modalTopicTitle">Topic Intuition & Notes</h3>
+      <button class="modal-close" onclick="closeNoteModal()">✕</button>
+    </div>
+    <div class="modal-subtitle" id="modalTopicSubtitle">Save your core takeaway, formula intuition, or edge cases.</div>
+    <textarea class="modal-textarea" id="noteTextarea" placeholder="Write down what clicked: e.g. Why did we need self.__init__? Or how does det(A) represent scaling of area?"></textarea>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeNoteModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = "aiml_prep_tracker_v1";
+
+  // Comprehensive Curriculum with Verified Working Links & Code Benchmarks
+  const PHASES = [
+    {
+      id: "p1",
+      category: "current",
+      type: "aiml",
+      number: "Phase 1",
+      title: "Python OOP & Engineering Foundations",
+      start: "2026-09-09",
+      end: "2026-09-15",
+      blurb: "Corey Schafer's verified OOP playlist. Don't passively watch: code along in VS Code or Jupyter and recreate from memory.",
+      benchmarkTitle: "Day 1 Goal: Write This Without Searching",
+      benchmarkDesc: "You should be able to write an inheritance hierarchy with constructor chaining and instance checks by the end of Day 1:",
+      benchmarkCode: `class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    def speak(self):
+        return f"{self.name} makes a sound"
+
+class Dog(Animal):
+    def __init__(self, name):
+        super().__init__(name, "Canis lupus")
+    def speak(self):
+        return f"{self.name} barks"
+
+dog = Dog("Bruno")
+print(dog.speak())               # Bruno barks
+print(isinstance(dog, Animal))   # True`,
+      tasks: [
+        { id: "p1_t1", title: "Video 1: Classes and Instances", sub: "Instance variables, __init__, method self parameter", link: "https://www.youtube.com/watch?v=ZDa-Z5JzLYM" },
+        { id: "p1_t2", title: "Video 2: Class Variables", sub: "Class vs instance namespace, num_of_emps tracker", link: "https://www.youtube.com/watch?v=BJ-VvGyQxho" },
+        { id: "p1_t3", title: "Video 3: Classmethods and Staticmethods", sub: "@classmethod as alternate constructors (from_string), @staticmethod", link: "https://www.youtube.com/watch?v=rq8cL2XMM5M" },
+        { id: "p1_t4", title: "Video 4: Inheritance — Creating Subclasses", sub: "super().__init__(), isinstance(), issubclass(), Developer/Manager classes", link: "https://www.youtube.com/watch?v=RSl87lqOXDE" },
+        { id: "p1_t5", title: "Video 5: Special (Magic / Dunder) Methods", sub: "__repr__, __str__, __add__, __len__ implementation", link: "https://www.youtube.com/watch?v=3ohzBxoFHAY" },
+        { id: "p1_t6", title: "Video 6: Property Decorators — Getters, Setters, Deleters", sub: "@property, @fullname.setter, @fullname.deleter", link: "https://www.youtube.com/watch?v=jCzT9XFZ5bw" }
+      ]
+    },
+    {
+      id: "p2",
+      category: "math",
+      type: "aiml",
+      number: "Phase 2",
+      title: "OOP Original Project + Linear Algebra Kickoff",
+      start: "2026-09-16",
+      end: "2026-09-22",
+      blurb: "Prove the OOP stuck by building one original Python project from scratch, then open 3Blue1Brown to build visual geometric intuition.",
+      benchmarkTitle: "Visual Linear Algebra Intuition Check",
+      benchmarkDesc: "Can you explain what a vector is in physics vs CS, and what 'span' means in 1 simple sentence without looking up formulas?",
+      benchmarkCode: `# Mental Model:
+# 1. Vector in CS = List of numbers.
+# 2. Vector in Physics = Arrow pointing in space with magnitude & direction.
+# 3. Vector in ML = A point or direction in n-dimensional feature space.
+# 4. Span = The set of ALL possible linear combinations of a set of vectors.`,
+      tasks: [
+        { id: "p2_t1", title: "Build One Original OOP Project (No Tutorial Clone)", sub: "e.g. Bank Account with transactions, or Neural Layer simulator class using pure Python", link: "" },
+        { id: "p2_t2", title: "3B1B Ch.1: Vectors, what even are they?", sub: "Physics vs Computer Science vs Math perspective", link: "https://www.youtube.com/watch?v=fNk_zzaMoSs" },
+        { id: "p2_t3", title: "3B1B Ch.2: Linear combinations, span, and basis vectors", sub: "Basis vectors i-hat and j-hat, linear dependence", link: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" },
+        { id: "p2_t4", title: "Review, Architecture Writeup & Git Push", sub: "Push OOP project to GitHub with a README explaining WHY you structured the classes this way (not just what they do)", link: "" }
+      ]
+    },
+    {
+      id: "p3",
+      category: "math",
+      type: "aiml",
+      number: "Phase 3",
+      title: "Linear Algebra + NumPy (Paired Implementation)",
+      start: "2026-09-23",
+      end: "2026-10-05",
+      blurb: "Every 3Blue1Brown chapter gets re-implemented in NumPy code the very same week. Tight 2-week sprint before mid-terms.",
+      benchmarkTitle: "Vectorized Operations vs Slow Python Loops",
+      benchmarkDesc: "Experience the 100x speedup of NumPy vectorization over standard Python loops:",
+      benchmarkCode: `import numpy as np
+
+A = np.array([[2, 1], [0, 3]])    # 2x2 Linear Transformation
+x = np.array([1, 2])              # 2D Vector
+b = A @ x                         # Matrix-Vector Multiplication: [4, 6]
+
+det = np.linalg.det(A)            # Determinant = 6 (Area scaling factor)
+inv = np.linalg.inv(A)            # Inverse Transformation
+eigenvals, eigenvecs = np.linalg.eig(A) # Eigen analysis`,
+      tasks: [
+        { id: "p3_t1", title: "3B1B Ch.3: Linear Transformations & Matrices", sub: "Understand matrix as transforming space & implement in NumPy (A @ x)", link: "https://www.youtube.com/watch?v=kYB8IZa5AuE" },
+        { id: "p3_t2", title: "3B1B Ch.4: Matrix Multiplication as Composition", sub: "Why order matters (AB != BA) & practice np.matmul()", link: "https://www.youtube.com/watch?v=XkY2DOUCWMU" },
+        { id: "p3_t3", title: "3B1B Ch.5–6: 3D Transforms + The Determinant", sub: "Determinant as geometric area/volume scaling factor & np.linalg.det()", link: "https://www.youtube.com/watch?v=Ip3X9LOh2dk" },
+        { id: "p3_t4", title: "3B1B Ch.7: Inverse, Column Space, Null Space", sub: "Solving Ax = b using np.linalg.solve() and np.linalg.inv()", link: "https://www.youtube.com/watch?v=uQhTuRlWM3E" },
+        { id: "p3_t5", title: "3B1B Ch.8–9: Dot Products and Duality", sub: "Dot product as projection & duality intuition with np.dot()", link: "https://www.youtube.com/watch?v=LyGKycYT2v0" },
+        { id: "p3_t6", title: "3B1B Ch.14: Eigenvectors and Eigenvalues", sub: "Vectors that don't rotate during transformation & np.linalg.eig()", link: "https://www.youtube.com/watch?v=PFDu9oVAE-g" },
+        { id: "p3_t7", title: "Pandas 10-Minute Official Primer", sub: "Series, DataFrames, boolean indexing, groupby operations", link: "https://pandas.pydata.org/docs/user_guide/10min.html" },
+        { id: "p3_t8", title: "Geometric Intuition Writeup (Blog / Gist)", sub: "Explain what determinant and eigenvectors mean geometrically in your own words", link: "" }
+      ]
+    },
+    {
+      id: "b1",
+      category: "blackout",
+      type: "blackout",
+      number: "Exam Blackout",
+      title: "KRMU Mid-Term Examination Window",
+      start: "2026-10-06",
+      end: "2026-10-17",
+      blurb: "Eligibility List: Oct 6 · Exams: Oct 13–17. AI/ML Specialization is intentionally delayed until AFTER mid-terms. Protect your 9.2 CGPA.",
+      benchmarkTitle: "Blackout Protocol Rules",
+      benchmarkDesc: "1. All ML Coursera and heavy side-projects pause 100%.\n2. DSA drops to 1 easy maintenance problem (or pauses).\n3. All evening slots (4:20–8:05 PM) switch to college syllabus revision.\n4. Protect the 20 internal marks per subject.",
+      benchmarkCode: `# Protocol State:
+ACADEMIC_LOCKDOWN = True
+CGPA_DEFENSE = 9.2
+PAUSE_PROJECTS = True`,
+      tasks: [
+        { id: "b1_t1", title: "Verify Attendance & Eligibility List (Oct 6)", sub: "Confirm attendance >= 75% across all semester subjects", link: "" },
+        { id: "b1_t2", title: "Mid-Term Exams (Oct 13–17)", sub: "Target 18+/20 across all internal papers to protect 9.2 CGPA", link: "" },
+        { id: "b1_t3", title: "Mid-Term Rest & Reset (Oct 18–19)", sub: "Decompress, celebrate exam finish, prepare for Andrew Ng Course 1", link: "" }
+      ]
+    },
+    {
+      id: "p4",
+      category: "ml",
+      type: "aiml",
+      number: "Phase 4",
+      title: "Andrew Ng — ML Specialization (Course 1: Supervised ML)",
+      start: "2026-10-20",
+      end: "2026-11-02",
+      blurb: "Supervised Learning: Regression and Classification. Enrolled for free on Coursera audit track. High ROI algorithmic grounding.",
+      benchmarkTitle: "Gradient Descent from Scratch",
+      benchmarkDesc: "You will master the mathematical intuition of cost functions and parameter updates:",
+      benchmarkCode: `# Cost Function: J(w, b) = (1 / 2m) * sum((y_hat - y)^2)
+# Gradient Update:
+# w = w - alpha * (1 / m) * sum((y_hat - y) * x)
+# b = b - alpha * (1 / m) * sum((y_hat - y))`,
+      tasks: [
+        { id: "p4_t1", title: "Enroll in DeepLearning.AI ML Specialization (Audit Free)", sub: "Coursera audit option grants full lecture & lab access", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p4_calc", title: "3B1B Essence of Calculus (Ch. 1–3: Derivative & Chain Rule Intuition)", sub: "Ch.1 What is a derivative? · Ch.2 Derivative formulas through geometry · Ch.3 Visualizing the chain rule (~40 min prerequisite for gradient descent)", link: "https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr" },
+        { id: "p4_t2", title: "Week 1: Introduction to Supervised Learning & Linear Regression", sub: "Model representation, cost function intuition, univariate regression", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p4_t3", title: "Week 2: Multiple Linear Regression & Vectorization", sub: "Multivariate gradient descent, feature scaling, learning rate selection", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p4_t4", title: "Week 3: Classification & Logistic Regression", sub: "Sigmoid function, decision boundaries, cost function, overfitting & regularization (L2)", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p4_t5", title: "Code Project: Implement Linear & Logistic Regression from Scratch in NumPy", sub: "Build model without scikit-learn to verify you understand the math", link: "" },
+        { id: "p4_write", title: "Technical Article / LinkedIn: From-Scratch Gradient Descent", sub: "Writeup: 'What I learned implementing gradient descent from scratch' (ML credibility building)", link: "" }
+      ]
+    },
+    {
+      id: "p5",
+      category: "ml",
+      type: "aiml",
+      number: "Phase 5",
+      title: "Andrew Ng — Advanced Learning Algorithms (Course 2)",
+      start: "2026-11-03",
+      end: "2026-11-30",
+      blurb: "Neural networks, TensorFlow/Keras implementation, decision trees, tree ensembles, and ML diagnostic advice.",
+      benchmarkTitle: "Single Layer Forward Propagation in NumPy",
+      benchmarkDesc: "Demystify neural networks as matrix multiplications followed by activation functions:",
+      benchmarkCode: `import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+# Forward propagation for a single dense layer
+X = np.array([[200, 17]])        # Input features
+W = np.array([[1, -3, 5],        # Weights (2x3)
+              [-2, 4, -6]])
+B = np.array([[-1, 1, 2]])       # Biases (1x3)
+
+Z = X @ W + B
+A = sigmoid(Z)
+print("Layer Output Activation:", A)`,
+      tasks: [
+        { id: "p5_t1", title: "Week 1: Neural Networks Foundations", sub: "Neurons, network layers, forward propagation in NumPy & TensorFlow", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p5_t2", title: "Week 2: Neural Network Training", sub: "Activation functions (ReLU, Sigmoid, Softmax), cross-entropy loss", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p5_nn2", title: "3B1B Neural Networks Ch. 2: Gradient Descent & Learning", sub: "How neural networks learn via cost landscapes and gradient vectors", link: "https://www.youtube.com/watch?v=IHZwWFHWa-w" },
+        { id: "p5_nn3", title: "3B1B Neural Networks Ch. 3: What is Backpropagation Really?", sub: "Intuitive visual explanation of sensitivity derivatives and error signal propagation", link: "https://www.youtube.com/watch?v=Ilg3gGewQ5U" },
+        { id: "p5_nn4", title: "3B1B Neural Networks Ch. 4: Backpropagation Calculus", sub: "Formal chain rule equations connecting layer-by-layer partial derivatives", link: "https://www.youtube.com/watch?v=tIeHLnjs5U8" },
+        { id: "p5_write", title: "Conceptual Writeup: Backpropagation in Plain English", sub: "Summarize backpropagation intuitively in your own words (evaluating Ch. 2–4 and chain rule comprehension)", link: "" },
+        { id: "p5_t3", title: "Week 3: Evaluating Models & Machine Learning Diagnostics", sub: "Bias vs variance, learning curves, train/val/test splits, precision/recall", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p5_t4", title: "Week 4: Decision Trees & Ensemble Methods", sub: "Information gain, entropy, Random Forests, XGBoost overview", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+        { id: "p5_t5", title: "Read: 'How to Read a Paper' by S. Keshav", sub: "Essential 2-page research literacy guide for engineering students", link: "http://ccr.sigcomm.org/online/files/p83-keshavA.pdf" }
+      ]
+    },
+    {
+      id: "b2",
+      category: "blackout",
+      type: "blackout",
+      number: "Exam Blackout",
+      title: "Practicals & End-Term University Examinations",
+      start: "2026-12-01",
+      end: "2026-12-24",
+      blurb: "Practicals: Nov 30–Dec 4 · End-Terms: Dec 7–24. Pure academic focus. Defend the 9.2 CGPA for future researcher credentialing.",
+      benchmarkTitle: "End-Term Lockdown",
+      benchmarkDesc: "Zero new ML projects. Keep physical sanity with 3x/week morning gym. Protect your academic transcript.",
+      benchmarkCode: `# State:
+SEMESTER_3_FINALS = True
+DSA_AUDIT_EXAM = "Ready" # (Prepared via 60-day syllabus alignment)
+GPA_TARGET = ">= 9.0"`,
+      tasks: [
+        { id: "b2_t1", title: "Practical Exams & Project Presentations (Nov 30 – Dec 4)", sub: "Internal & external lab examinations and viva prep", link: "" },
+        { id: "b2_t2", title: "End-Semester Theory Examinations (Dec 7 – Dec 24)", sub: "Complete academic focus across all CSE semester subjects", link: "" }
+      ]
+    },
+    {
+      id: "p6",
+      category: "ml",
+      type: "aiml",
+      number: "Phase 6",
+      title: "Winter Break Research Sprint (17 Uninterrupted Days)",
+      start: "2026-12-25",
+      end: "2027-01-10",
+      blurb: "17 full days with ZERO college classes. Deep 6–8 hour daily blocks available. Front-load probability foundations before PyTorch.",
+      benchmarkTitle: "PyTorch Tensor & Autograd Mastery",
+      benchmarkDesc: "Transition from pure NumPy to PyTorch, the lingua franca of modern AI research:",
+      benchmarkCode: `import torch
+import torch.nn as nn
+
+# Autograd demonstration
+x = torch.tensor(2.0, requires_grad=True)
+y = x ** 3 + 4 * x
+y.backward()
+print("dy/dx at x=2:", x.grad)   # 3*(2^2) + 4 = 16.0`,
+      tasks: [
+        { id: "p6_prob", title: "StatQuest Probability Primer: Bayes' Theorem & Distributions", sub: "Josh Starmer's StatQuest: Bayes' theorem, mean/variance, normal distribution (~2 hours total)", link: "https://www.youtube.com/playlist?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9" },
+        { id: "p6_mle", title: "StatQuest: Maximum Likelihood Estimation (MLE)", sub: "Understand the mathematical justification for Phase 4's logistic regression cost function", link: "https://www.youtube.com/watch?v=XepXtl9YKwc" },
+        { id: "p6_t1", title: "PyTorch Official Basics Tutorial", sub: "Tensors, Datasets & DataLoaders, Transforms, Build Model, Autograd, Optimization", link: "https://pytorch.org/tutorials/beginner/basics/intro.html" },
+        { id: "p6_t2", title: "Build & Train a PyTorch CNN (CIFAR-10)", sub: "Train a Convolutional Neural Network on CIFAR-10 with proper training & validation loops", link: "https://pytorch.org/tutorials/beginner/basics/optimization_tutorial.html" },
+        { id: "p6_t3", title: "Read: 'The Illustrated Transformer' by Jay Alammar", sub: "Understand self-attention, encoder-decoder architecture, query/key/value intuition", link: "https://jalammar.github.io/illustrated-transformer/" },
+        { id: "p6_write", title: "Transformer 1-Page Summary & Cold-Email Draft", sub: "1-page summary of Illustrated Transformer + draft first cold-email template to a professor in your chosen domain", link: "" },
+        { id: "p6_t4", title: "Explore Papers With Code & Choose Research Lane", sub: "Browse top research labs (IITs/IISc/IIIT-H CVIT) and select target summer domain (CV, NLP/LLMs, or Graph ML)", link: "https://paperswithcode.com/" }
+      ]
+    },
+    {
+      id: "p7",
+      category: "runway",
+      type: "aiml",
+      number: "Phase 7",
+      title: "Even Semester & Summer Research Runway",
+      start: "2027-01-11",
+      end: "2027-04-30",
+      blurb: "Translate autumn math foundations and winter code into Summer 2027 research lab placement (IITs, IISc, IIIT-H CVIT, or national fellowships).",
+      benchmarkTitle: "Professor Outreach & Research Portfolio Stack",
+      benchmarkDesc: "Cold outreach is only as strong as your verifiable GitHub repositories and concise email pitch:",
+      benchmarkCode: `# Research Outreach Stack:
+# 1. GitHub: OOP architecture + pure NumPy regression + PyTorch CNN
+# 2. 1-page academic CV with 9.2 CGPA front and center
+# 3. Personalized cold email citing 1 specific recent paper of the PI
+# 4. Target labs: IIT Bombay, IIT Delhi, IISc CSA/CDS, IIIT-H CVIT`,
+      tasks: [
+        { id: "p7_t1", title: "Shortlist 8–10 Research Professors", sub: "Find faculty at IIT/IISc/IIIT-H CVIT whose work matches the domain you picked in Phase 6", link: "" },
+        { id: "p7_t2", title: "Polish Academic CV & GitHub Portfolio", sub: "Feature 9.2 CGPA and completed projects: OOP project, from-scratch NumPy regression, PyTorch CNN", link: "" },
+        { id: "p7_t3", title: "Send First Batch of Tailored Cold Emails", sub: "Reference specific recent papers; include concise project repo links and CV", link: "" },
+        { id: "p7_t4", title: "Monitor Fellowship Application Windows", sub: "Check IASc-INSA-NASI Summer Fellowship and IIT summer programs (verify live dates; deadlines shift year to year)", link: "" },
+        { id: "p7_t5", title: "Launch Advanced Portfolio Project", sub: "Start a second, larger portfolio project applying deep learning beyond the winter CIFAR-10 exercise", link: "" }
+      ]
+    }
+  ];
+
+  let state = {
+    checked: {},
+    notes: {}
+  };
+
+  let activeFilter = 'all';
+  let editingTaskId = null;
+  let editingTaskTitle = "";
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) state = JSON.parse(raw);
+    } catch(e) { console.error("Error reading state", e); }
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch(e) { console.error("Error saving state", e); }
+  }
+
+  function isTaskDone(taskId) {
+    return !!state.checked[taskId];
+  }
+
+  function toggleTask(taskId) {
+    state.checked[taskId] = !state.checked[taskId];
+    saveState();
+    renderAll();
+  }
+
+  function getTaskNote(taskId) {
+    return state.notes[taskId] || "";
+  }
+
+  function openNoteModal(taskId, title) {
+    editingTaskId = taskId;
+    editingTaskTitle = title;
+    document.getElementById('modalTopicTitle').textContent = `Note: ${title}`;
+    document.getElementById('noteTextarea').value = getTaskNote(taskId);
+    document.getElementById('noteModal').classList.remove('hidden');
+    setTimeout(() => document.getElementById('noteTextarea').focus(), 50);
+  }
+
+  function closeNoteModal() {
+    document.getElementById('noteModal').classList.add('hidden');
+    editingTaskId = null;
+  }
+
+  function saveNote() {
+    if (!editingTaskId) return;
+    const text = document.getElementById('noteTextarea').value.trim();
+    if (text) {
+      state.notes[editingTaskId] = text;
+    } else {
+      delete state.notes[editingTaskId];
+    }
+    saveState();
+    closeNoteModal();
+    renderAll();
+  }
+
+  function calcStats() {
+    let totalTasks = 0;
+    let doneTasks = 0;
+
+    PHASES.forEach(p => {
+      p.tasks.forEach(t => {
+        totalTasks++;
+        if (isTaskDone(t.id)) doneTasks++;
+      });
+    });
+
+    const pct = totalTasks ? Math.round((doneTasks / totalTasks) * 100) : 0;
+    return { totalTasks, doneTasks, pct };
+  }
+
+  function filterPhases(cat) {
+    activeFilter = cat;
+    document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    renderPhases();
+  }
+
+  function togglePhaseAccordion(phaseId) {
+    const bodyEl = document.getElementById(`body_${phaseId}`);
+    const headEl = document.getElementById(`head_${phaseId}`);
+    const iconEl = document.getElementById(`icon_${phaseId}`);
+
+    if (bodyEl.classList.contains('open')) {
+      bodyEl.classList.remove('open');
+      headEl.classList.remove('expanded');
+      iconEl.classList.remove('expanded');
+    } else {
+      bodyEl.classList.add('open');
+      headEl.classList.add('expanded');
+      iconEl.classList.add('expanded');
+    }
+  }
+
+  function getCurrentPhaseId() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < PHASES.length; i++) {
+      const p = PHASES[i];
+      const start = new Date(p.start + "T00:00:00");
+      const end = new Date(p.end + "T23:59:59");
+      if (today >= start && today <= end) {
+        return p.id;
+      }
+    }
+
+    if (today < new Date(PHASES[0].start + "T00:00:00")) {
+      return PHASES[0].id;
+    }
+
+    for (let i = 0; i < PHASES.length - 1; i++) {
+      const curEnd = new Date(PHASES[i].end + "T23:59:59");
+      const nextStart = new Date(PHASES[i + 1].start + "T00:00:00");
+      if (today > curEnd && today < nextStart) {
+        return PHASES[i + 1].id;
+      }
+    }
+
+    return PHASES[PHASES.length - 1].id;
+  }
+
+  function renderPhases() {
+    const container = document.getElementById('phasesList');
+    container.innerHTML = "";
+
+    const currentPhaseId = getCurrentPhaseId();
+
+    const filtered = PHASES.filter(p => {
+      if (activeFilter === 'all') return true;
+      if (activeFilter === 'current') return p.id === currentPhaseId;
+      if (activeFilter === 'math') return p.id === 'p2' || p.id === 'p3';
+      if (activeFilter === 'ml') return p.id === 'p4' || p.id === 'p5' || p.id === 'p6';
+      if (activeFilter === 'research') return p.id === 'p6' || p.id === 'p7';
+      if (activeFilter === 'blackout') return p.type === 'blackout';
+      return true;
+    });
+
+    filtered.forEach(p => {
+      const isBlackout = p.type === "blackout";
+      const isCurrent = p.id === currentPhaseId;
+      
+      const phaseTotal = p.tasks.length;
+      const phaseDone = p.tasks.filter(t => isTaskDone(t.id)).length;
+      const phasePct = phaseTotal ? Math.round((phaseDone / phaseTotal) * 100) : 0;
+
+      const card = document.createElement('div');
+      card.className = `phase-card ${isCurrent ? 'is-current' : ''} ${isBlackout ? 'is-blackout' : ''}`;
+
+      let pillClass = "phase-pill";
+      let pillText = p.number;
+      if (isCurrent) { pillClass += " current"; pillText = "You Are Here · " + p.number; }
+      else if (isBlackout) { pillClass += " blackout"; pillText = "Exam Blackout"; }
+      else if (phasePct === 100) { pillClass += " done"; pillText = "Completed ✓"; }
+
+      const autoOpen = isCurrent || activeFilter !== 'all';
+
+      card.innerHTML = `
+        <div class="phase-header ${autoOpen ? 'expanded' : ''}" id="head_${p.id}" onclick="togglePhaseAccordion('${p.id}')">
+          <div class="phase-info">
+            <div class="phase-badge-row">
+              <span class="${pillClass}">${pillText}</span>
+              <span class="phase-dates">${p.start} &rarr; ${p.end}</span>
+            </div>
+            <div class="phase-title">${p.title}</div>
+            <div class="phase-blurb">${p.blurb}</div>
+          </div>
+          <div class="phase-side-stats">
+            <div class="phase-progress-text">${phaseDone}/${phaseTotal}</div>
+            <div class="phase-mini-bar">
+              <div class="phase-mini-fill" style="width: ${phasePct}%;"></div>
+            </div>
+            <span class="toggle-icon ${autoOpen ? 'expanded' : ''}" id="icon_${p.id}">▼</span>
+          </div>
+        </div>
+
+        <div class="phase-body ${autoOpen ? 'open' : ''}" id="body_${p.id}">
+          ${p.benchmarkTitle ? `
+            <div class="benchmark-box">
+              <div class="benchmark-title">⚡ ${p.benchmarkTitle}</div>
+              <div class="benchmark-desc">${p.benchmarkDesc.replace(/\\n/g, '<br>')}</div>
+              <pre class="code-preview"><code>${p.benchmarkCode.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
+            </div>
+          ` : ''}
+
+          <div class="task-list">
+            ${p.tasks.map(t => {
+              const done = isTaskDone(t.id);
+              const note = getTaskNote(t.id);
+              return `
+                <div class="task-item ${done ? 'is-done' : ''}">
+                  <div class="task-checkbox ${done ? 'checked' : ''}" onclick="toggleTask('${t.id}')"></div>
+                  <div class="task-main">
+                    <div class="task-title">${t.title}</div>
+                    <div class="task-sub">${t.sub}</div>
+                    ${note ? `<div class="task-note-view">"${note}"</div>` : ''}
+                  </div>
+                  <div class="task-actions">
+                    ${t.link ? `<a href="${t.link}" target="_blank" rel="noopener noreferrer" class="btn-link-sm">Open ↗</a>` : ''}
+                    <button class="btn-note ${note ? 'has-note' : ''}" onclick="openNoteModal('${t.id}', '${t.title.replace(/'/g, "\\'")}')" title="Add or edit note">✏</button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+  }
+
+  function renderAll() {
+    const stats = calcStats();
+    document.getElementById('completedCount').textContent = `${stats.doneTasks} / ${stats.totalTasks}`;
+    document.getElementById('completionPct').textContent = `${stats.pct}% Complete`;
+    document.getElementById('progressPercentNum').textContent = `${stats.pct}%`;
+    document.getElementById('overallProgressBar').style.width = `${stats.pct}%`;
+    renderPhases();
+  }
+
+  function exportData() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "aiml-tracker-backup.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function triggerImport() {
+    document.getElementById('fileInput').click();
+  }
+
+  function handleImportFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const parsed = JSON.parse(evt.target.result);
+        if (parsed.checked || parsed.notes) {
+          state = {
+            checked: parsed.checked || {},
+            notes: parsed.notes || {}
+          };
+          saveState();
+          renderAll();
+          alert("Backup restored successfully!");
+        } else {
+          alert("Invalid backup file structure.");
+        }
+      } catch(err) {
+        alert("Failed to parse JSON file.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  }
+
+  function resetProgress() {
+    if (confirm("Reset all AI/ML tasks, checkmarks, and notes? This cannot be undone.")) {
+      state = { checked: {}, notes: {} };
+      saveState();
+      renderAll();
+    }
+  }
+
+  // Close modal on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !document.getElementById('noteModal').classList.contains('hidden')) {
+      closeNoteModal();
+    }
+  });
+
+  // Init
+  loadState();
+  renderAll();
+</script>
+</body>
+</html>

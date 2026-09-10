@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KRMU Sem 3 — Master Timetable & Routine OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #07090e;
+      --bg-surface: #0e131f;
+      --bg-card: #131b2e;
+      --bg-card-hover: #19243d;
+      --border-subtle: #1c2742;
+      --border-accent: #2e3e66;
+      --text-main: #e2e8f0;
+      --text-muted: #8b9bb4;
+      --text-dim: #4f617d;
+      --teal: #14b8a6;
+      --teal-dim: rgba(20, 184, 166, 0.12);
+      --teal-glow: rgba(20, 184, 166, 0.3);
+      --blue: #3b82f6;
+      --blue-dim: rgba(59, 130, 246, 0.12);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245, 158, 11, 0.12);
+      --purple: #8b5cf6;
+      --purple-dim: rgba(139, 92, 246, 0.12);
+      --red: #ef4444;
+      --red-dim: rgba(239, 68, 68, 0.12);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    /* Ambient Background Glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -150px;
+      left: 10%;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(20, 184, 166, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .badge-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tag b { color: var(--text-main); }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+    .dot.green { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .dot.teal { background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+    .dot.amber { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
+      color: var(--teal);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-link:hover {
+      background: var(--teal-dim);
+      border-color: var(--teal);
+      transform: translateY(-1px);
+    }
+
+    /* Header */
+    .header-section {
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .subtext {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      max-width: 740px;
+      line-height: 1.55;
+    }
+
+    /* Quick KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--teal);
+      opacity: 0.7;
+    }
+    .kpi-card.blue::after { background: var(--blue); }
+    .kpi-card.amber::after { background: var(--amber); }
+    .kpi-card.purple::after { background: var(--purple); }
+
+    .kpi-label {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .kpi-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .kpi-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Tabs Navigation */
+    .tabs-wrap {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      border-color: var(--border-accent);
+      background: var(--bg-card);
+    }
+    .tab-btn.active {
+      background: var(--teal-dim);
+      border-color: var(--teal);
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    /* Live Time Banner */
+    .live-banner {
+      background: linear-gradient(90deg, rgba(20, 184, 166, 0.08), rgba(59, 130, 246, 0.05));
+      border: 1px solid rgba(20, 184, 166, 0.25);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .live-clock {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .current-slot {
+      font-size: 13px;
+      color: var(--text-main);
+    }
+    .current-slot b {
+      color: #38bdf8;
+    }
+
+    /* Timetable Table */
+    .schedule-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .schedule-head {
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .schedule-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .schedule-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .time-slot {
+      display: grid;
+      grid-template-columns: 140px 1fr 140px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .time-slot:last-child {
+      border-bottom: none;
+    }
+    .time-slot:hover {
+      background: rgba(255,255,255,0.015);
+    }
+    .time-slot.is-active {
+      background: rgba(20, 184, 166, 0.07);
+      border-left: 3px solid var(--teal);
+    }
+
+    .slot-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--teal);
+      font-weight: 500;
+    }
+    .slot-body {}
+    .slot-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .slot-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .slot-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      justify-self: end;
+      border: 1px solid transparent;
+    }
+    .tag-gym { background: rgba(245, 158, 11, 0.15); color: var(--amber); border-color: rgba(245, 158, 11, 0.3); }
+    .tag-mess { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+    .tag-college { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); }
+    .tag-study { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border-color: rgba(139, 92, 246, 0.3); }
+    .tag-dsa { background: rgba(20, 184, 166, 0.15); color: var(--teal); border-color: rgba(20, 184, 166, 0.3); }
+    .tag-rest { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border-color: rgba(148, 163, 184, 0.3); }
+
+    /* Rules & Strategy Grid */
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .strat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+    .strat-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .strat-card p, .strat-card ul {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .strat-card ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+    .strat-card li {
+      margin-bottom: 6px;
+    }
+    .highlight {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* Exam Blackout Alert */
+    .blackout-banner {
+      background: repeating-linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.08) 12px, rgba(239, 68, 68, 0.04) 12px, rgba(239, 68, 68, 0.04) 24px);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+    .blackout-banner h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14.5px;
+      color: #f87171;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .blackout-banner p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 680px) {
+      .time-slot {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .slot-tag {
+        justify-self: start;
+        margin-top: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Top Status Bar -->
+  <div class="top-bar">
+    <div class="badge-bar">
+      <span class="tag"><span class="dot green"></span> CGPA: <b>9.2</b></span>
+      <span class="tag"><span class="dot teal"></span> CCST: <b>982 / 1000</b> (Cleared)</span>
+      <span class="tag"><span class="dot amber"></span> Semester III <b>(Restarted)</b></span>
+      <span class="tag">KRMU Session <b>2026–2027</b></span>
+    </div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <a href="aiml-tracker/index.html" class="btn-link" style="color: #06b6d4; border-color: rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.1);">
+        <span>🧠 Launch AI/ML Tracker</span> ↗
+      </a>
+      <a href="dsa-tracker/index.html" class="btn-link">
+        <span>⚡ Launch DSA Tracker</span> ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header-section">
+    <div class="eyebrow">Academic & Research Operating System</div>
+    <h1>Semester 3 Master Timetable</h1>
+    <p class="subtext">
+      Engineered to balance college lectures (9:00 AM – 4:00 PM), hostel mess timings, 
+      morning strength training, college coursework (protecting your 9.2 CGPA), 
+      exactly 1 high-yield DSA problem daily, and AI/ML foundations.
+    </p>
+  </div>
+
+  <!-- KPI Milestone Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Morning Gym Window</div>
+      <div class="kpi-val">07:00 – 08:15 AM</div>
+      <div class="kpi-sub">Leaves evening free for deep research</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">College Lectures</div>
+      <div class="kpi-val">09:00 – 04:00 PM</div>
+      <div class="kpi-sub">Mon–Fri · Lunch 12:10–02:00 PM</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Daily Deep Study</div>
+      <div class="kpi-val">~3.25 Hours / Day</div>
+      <div class="kpi-sub">1h College + 50m DSA + 75m AI/ML</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Next Academic Milestone</div>
+      <div class="kpi-val">Oct 13 – 17, 2026</div>
+      <div class="kpi-sub">KRMU Mid-Term Exams (Blackout mode)</div>
+    </div>
+  </div>
+
+  <!-- Live Dynamic Slot Bar -->
+  <div class="live-banner">
+    <div class="live-clock">
+      <span class="dot teal"></span>
+      <span id="liveTime">Loading time...</span>
+    </div>
+    <div class="current-slot" id="currentSlotText">
+      Current Block: <b>Detecting...</b>
+    </div>
+  </div>
+
+  <!-- Day View Navigation Tabs -->
+  <div class="tabs-wrap">
+    <button class="tab-btn active" onclick="setDayView('weekday')">📅 Mon–Fri (Regular Routine)</button>
+    <button class="tab-btn" onclick="setDayView('saturday')">🚀 Saturday (Deep Work)</button>
+    <button class="tab-btn" onclick="setDayView('sunday')">🔋 Sunday (Reset & Buffer)</button>
+    <button class="tab-btn" onclick="setDayView('blackout')">🛑 Exam Blackout Rules</button>
+  </div>
+
+  <!-- Schedule Container -->
+  <div id="scheduleContainer"></div>
+
+  <!-- Core Strategies Section -->
+  <div class="strategy-grid">
+    <div class="strat-card">
+      <h3>🏋️ Gym Decision Rationale: Morning Win</h3>
+      <p>
+        <span class="highlight">Why Morning (7:00–8:15 AM) beats Evening (7:00–9:30 PM):</span>
+      </p>
+      <ul>
+        <li><b>Mess Dinner Collision:</b> Evening gym overlaps Dinner (8:00–9:30 PM). Rushing sweaty to the mess at 9:15 PM means cold food, bad digestion, or skipping meals.</li>
+        <li><b>Willpower Protection:</b> After 7 hours of college, mental resistance is highest. Morning workouts guarantee physical consistency.</li>
+        <li><b>Evening Study Continuity:</b> Keeps 6:00–8:00 PM uninterrupted for your DSA problem + Andrew Ng / Linear Algebra.</li>
+      </ul>
+    </div>
+
+    <div class="strat-card">
+      <h3>🛡️ Protecting the 9.2 CGPA</h3>
+      <p>
+        <span class="highlight">4:20 PM – 5:15 PM is your non-negotiable GPA Shield:</span>
+      </p>
+      <ul>
+        <li><b>Immediate Recall:</b> Review the 2–3 college lectures delivered that day while still fresh in short-term memory.</li>
+        <li><b>Zero Lab Backlog:</b> Complete lab experiment write-ups, practical manuals, and CCST coding test assignments during this slot.</li>
+        <li><b>Pre-empting Mid-Terms:</b> By staying updated daily, Mid-Terms (Oct 13–17) and End-Terms (Dec 7–24) require revision, not panic.</li>
+      </ul>
+    </div>
+
+    <div class="strat-card">
+      <h3>⚡ The "1 DSA Question/Day" Protocol</h3>
+      <p>
+        <span class="highlight">Strict 50-Minute Bounded Execution (6:10–7:00 PM):</span>
+      </p>
+      <ul>
+        <li><b>Minutes 0–5:</b> Read problem from Master Tracker, clarify constraints & edge cases.</li>
+        <li><b>Minutes 5–30:</b> Dry run approach on paper, write solution in IDE/LeetCode.</li>
+        <li><b>Minutes 30–40:</b> If stuck past 30 mins, read editorial/pattern breakdown. Understand the optimal time/space complexity.</li>
+        <li><b>Minutes 40–50:</b> Log key pattern intuition in the Tracker's note drawer. <i>Hard stop at 7:00 PM.</i></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SCHEDULES = {
+    weekday: {
+      title: "Weekday Routine (Monday to Friday)",
+      meta: "Target: 7.5h Sleep · 1h Gym · 3h+ Focused Work · Mess Synced",
+      slots: [
+        { time: "06:30 – 06:50 AM", name: "Wake Up & Hydration", desc: "Brush, drink 500ml water, change into workout gear, light stretch.", tag: "REST", tagClass: "tag-rest", startH: 6, startM: 30, endH: 6, endM: 50 },
+        { time: "07:00 – 08:10 AM", name: "Gym Workout Slot", desc: "Strength training / weights. Focused 60-70 min workout.", tag: "GYM", tagClass: "tag-gym", startH: 7, startM: 0, endH: 8, endM: 10 },
+        { time: "08:10 – 08:25 AM", name: "Shower & College Prep", desc: "Cool down, shower, dress for college, pack bag.", tag: "REST", tagClass: "tag-rest", startH: 8, startM: 10, endH: 8, endM: 25 },
+        { time: "08:25 – 08:55 AM", name: "Hostel Breakfast (Mess: 8:15–9:10)", desc: "High protein meal (eggs/sprouts/paneer/dalia). Relaxed, unhurried breakfast.", tag: "MESS", tagClass: "tag-mess", startH: 8, startM: 25, endH: 8, endM: 55 },
+        { time: "08:55 – 09:00 AM", name: "Walk to Academic Block", desc: "Reach classroom on time for attendance.", tag: "COLLEGE", tagClass: "tag-college", startH: 8, startM: 55, endH: 9, endM: 0 },
+        { time: "09:00 – 12:10 PM", name: "College Classes / Morning Labs", desc: "Active note-taking. Ask questions directly in class to reduce hostel study time.", tag: "COLLEGE", tagClass: "tag-college", startH: 9, startM: 0, endH: 12, endM: 10 },
+        { time: "12:10 – 01:15 PM", name: "College Lunch Break (Mess: 12:10–2:00)", desc: "Balanced lunch in hostel mess. Hydrate and decompress with batchmates.", tag: "MESS", tagClass: "tag-mess", startH: 12, startM: 10, endH: 13, endM: 15 },
+        { time: "01:15 – 04:00 PM", name: "College Classes / Afternoon Labs", desc: "Complete lab experiments and signoffs in class so no manuals are carried to room.", tag: "COLLEGE", tagClass: "tag-college", startH: 13, startM: 15, endH: 16, endM: 0 },
+        { time: "04:00 – 04:20 PM", name: "Commute Back & Decompress", desc: "Return to hostel, wash face, drink water, transition out of college mode.", tag: "REST", tagClass: "tag-rest", startH: 16, startM: 0, endH: 16, endM: 20 },
+        { time: "04:20 – 05:15 PM", name: "College Subjects (GPA Shield Block)", desc: "Review today's lecture notes, assignments, homework, and lab write-ups. Protects the 9.2 CGPA.", tag: "STUDY", tagClass: "tag-study", startH: 16, startM: 20, endH: 17, endM: 15 },
+        { time: "05:15 – 06:05 PM", name: "Evening Snacks (Mess: 5:15–6:10)", desc: "Hostel tea + snacks. Campus walk, mental refresh.", tag: "MESS", tagClass: "tag-mess", startH: 17, startM: 15, endH: 18, endM: 5 },
+        { time: "06:10 – 07:00 PM", name: "DSA — Today's 1 Problem", desc: "Strict 50-minute bounded block. Solve 1 curated problem in the Master Tracker, log intuition.", tag: "DSA", tagClass: "tag-dsa", startH: 18, startM: 10, endH: 19, endM: 0 },
+        { time: "07:05 – 08:05 PM", name: "AI/ML Research Foundations", desc: "Current Phase focus: Linear Algebra, NumPy coding, or Andrew Ng Coursera course.", tag: "AI/ML", tagClass: "tag-study", startH: 19, startM: 5, endH: 20, endM: 5 },
+        { time: "08:10 – 09:00 PM", name: "Hostel Dinner (Mess: 8:00–9:30)", desc: "Unhurried dinner. Socialize, disconnect from screens.", tag: "MESS", tagClass: "tag-mess", startH: 20, startM: 10, endH: 21, endM: 0 },
+        { time: "09:00 – 09:45 PM", name: "Buffer / Light Review / Catchup", desc: "Overflow buffer if college assignments were heavy; or read 1 ML paper abstract / code review.", tag: "BUFFER", tagClass: "tag-study", startH: 21, startM: 0, endH: 21, endM: 45 },
+        { time: "09:45 – 10:15 PM", name: "Wind Down & Tomorrow Prep", desc: "Pack bag, set out morning gym clothes, plan tomorrow's 1 DSA problem, screen-off.", tag: "REST", tagClass: "tag-rest", startH: 21, startM: 45, endH: 22, endM: 15 },
+        { time: "10:15 – 10:30 PM", name: "Lights Out & Sleep", desc: "Solid 7.5 to 8 hours of deep restorative sleep. Essential for gym and cognitive speed.", tag: "REST", tagClass: "tag-rest", startH: 22, startM: 15, endH: 6, endM: 30 }
+      ]
+    },
+    saturday: {
+      title: "Saturday Routine (The Deep Acceleration Day)",
+      meta: "No Classes · 3h AI/ML Deep Work · 2h College Catchup · 1 DSA Question",
+      slots: [
+        { time: "06:45 – 07:00 AM", name: "Wake Up & Hydration", desc: "Natural wake up, hydration, gym prep.", tag: "REST", tagClass: "tag-rest" },
+        { time: "07:00 – 08:30 AM", name: "Full Gym Slot (No College Rush)", desc: "Complete training session + mobility / stretching.", tag: "GYM", tagClass: "tag-gym" },
+        { time: "08:30 – 09:15 AM", name: "Shower & Relaxed Breakfast", desc: "Mess breakfast (8:15–9:10 AM window).", tag: "MESS", tagClass: "tag-mess" },
+        { time: "09:30 – 12:15 PM", name: "AI/ML Deep Work Block (2h 45m)", desc: "Build/code an ML project, implement algorithms from scratch in NumPy, or complete Coursera labs.", tag: "AI/ML", tagClass: "tag-study" },
+        { time: "12:15 – 01:15 PM", name: "Hostel Lunch", desc: "Mess lunch (12:10–2:00 PM window).", tag: "MESS", tagClass: "tag-mess" },
+        { time: "01:15 – 02:15 PM", name: "Power Nap / Cognitive Reset", desc: "Lie down, recharge nervous system.", tag: "REST", tagClass: "tag-rest" },
+        { time: "02:15 – 04:30 PM", name: "College Academic Batch Work (2h 15m)", desc: "Batch complete all weekly assignments, lab files, and syllabus revision. Keeps weekdays light.", tag: "COLLEGE", tagClass: "tag-college" },
+        { time: "04:30 – 05:15 PM", name: "Free Time / Walk", desc: "Campus walk, call family/friends.", tag: "REST", tagClass: "tag-rest" },
+        { time: "05:15 – 06:10 PM", name: "Hostel Snacks", desc: "Mess evening snacks.", tag: "MESS", tagClass: "tag-mess" },
+        { time: "06:15 – 07:00 PM", name: "Saturday DSA Problem", desc: "Today's 1 problem from the tracker (Medium difficulty).", tag: "DSA", tagClass: "tag-dsa" },
+        { time: "07:00 – 08:15 PM", name: "Free Time / Exploration / Projects", desc: "Read research paper, explore GitHub, or socialize.", tag: "BUFFER", tagClass: "tag-study" },
+        { time: "08:15 – 09:15 PM", name: "Hostel Dinner", desc: "Mess dinner.", tag: "MESS", tagClass: "tag-mess" },
+        { time: "09:15 – 10:45 PM", name: "Social Time / Movie / Recharge", desc: "Relaxation time. Weekend movie, chill with friends.", tag: "REST", tagClass: "tag-rest" },
+        { time: "11:00 PM", name: "Sleep", desc: "Target 7.5–8 hours sleep.", tag: "REST", tagClass: "tag-rest" }
+      ]
+    },
+    sunday: {
+      title: "Sunday Routine (Recharge & Weekly System Audit)",
+      meta: "Buffer & Maintenance · Active Recovery · High Unstructured Free Time",
+      slots: [
+        { time: "07:15 – 07:30 AM", name: "Wake Up Unhurried", desc: "Gentle start to Sunday.", tag: "REST", tagClass: "tag-rest" },
+        { time: "07:30 – 08:30 AM", name: "Active Recovery / Optional Gym / Walk", desc: "Light cardio, mobility, or total rest day.", tag: "GYM", tagClass: "tag-gym" },
+        { time: "08:30 – 09:15 AM", name: "Breakfast (Mess: 8:15–9:10)", desc: "Hostel breakfast.", tag: "MESS", tagClass: "tag-mess" },
+        { time: "09:30 – 11:30 AM", name: "Weekly Catch-Up & DSA Maintenance", desc: "Review 3–4 problems from this week in your tracker. Fix weak patterns.", tag: "DSA", tagClass: "tag-dsa" },
+        { time: "11:30 – 12:15 PM", name: "Laundry & Room Organization", desc: "Physical environment reset for the upcoming week.", tag: "REST", tagClass: "tag-rest" },
+        { time: "12:15 – 01:15 PM", name: "Hostel Lunch", desc: "Mess lunch.", tag: "MESS", tagClass: "tag-mess" },
+        { time: "01:15 – 05:15 PM", name: "Guilt-Free Free Time (4 Hours)", desc: "Completely off. Outing, games, sports, music. Prevents burnout.", tag: "REST", tagClass: "tag-rest" },
+        { time: "05:15 – 06:10 PM", name: "Hostel Snacks", desc: "Mess evening snacks.", tag: "MESS", tagClass: "tag-mess" },
+        { time: "06:15 – 07:00 PM", name: "Sunday DSA Problem", desc: "Maintain streak with 1 problem.", tag: "DSA", tagClass: "tag-dsa" },
+        { time: "07:00 – 08:00 PM", name: "Weekly Audit & Next Week Phase Plan", desc: "Update your Master Tracker checkboxes, review academic calendar, set phase focus.", tag: "STUDY", tagClass: "tag-study" },
+        { time: "08:00 – 09:00 PM", name: "Hostel Dinner", desc: "Mess dinner.", tag: "MESS", tagClass: "tag-mess" },
+        { time: "09:00 – 10:00 PM", name: "Wind Down & Monday Readiness", desc: "Early to bed to dominate Monday morning gym.", tag: "REST", tagClass: "tag-rest" },
+        { time: "10:15 PM", name: "Sleep", desc: "Full night recovery.", tag: "REST", tagClass: "tag-rest" }
+      ]
+    },
+    blackout: {
+      title: "KRMU Exam Blackout Protocols (Official Calendar)",
+      meta: "Automatic Strategy Adaptation During Examination Windows",
+      slots: [
+        { time: "Oct 06 – Oct 17, 2026", name: "Mid-Term Examination Blackout", desc: "Eligibility List: Oct 6 · Exams: Oct 13–17. AI/ML project work PAUSES 100%. DSA drops to 1 easy problem. Evening blocks (4:20–8:05 PM) switch entirely to College Subject syllabus revision to secure the 20 internal marks.", tag: "COLLEGE", tagClass: "tag-college" },
+        { time: "Nov 30 – Dec 04, 2026", name: "Practical Examination & Project Presentations", desc: "All external and internal lab evaluations. Focus strictly on lab viva, code demonstrations, and presentation files.", tag: "COLLEGE", tagClass: "tag-college" },
+        { time: "Dec 07 – Dec 24, 2026", name: "End-Semester University Examinations", desc: "Pure academic lock-in. AI/ML and DSA paused. Gym maintained 3-4 days/week as mental health outlet. Protect the 9.2 CGPA at all costs.", tag: "COLLEGE", tagClass: "tag-college" },
+        { time: "Dec 25 – Jan 10, 2027", name: "Winter Break Sprint (17 Days)", desc: "Zero college classes. 6–8 hours daily deep block time. Choose either: (A) Full 90-Day DSA Master Sprint, or (B) PyTorch Deep Learning Research sprint.", tag: "AI/ML", tagClass: "tag-study" }
+      ]
+    }
+  };
+
+  let currentView = 'weekday';
+
+  function renderSchedule() {
+    const container = document.getElementById('scheduleContainer');
+    const data = SCHEDULES[currentView];
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    let html = `
+      <div class="schedule-card">
+        <div class="schedule-head">
+          <div class="schedule-title">${data.title}</div>
+          <div class="schedule-meta">${data.meta}</div>
+        </div>
+    `;
+
+    data.slots.forEach(slot => {
+      let isActive = false;
+      if (currentView === 'weekday' && slot.startH !== undefined) {
+        const startMins = slot.startH * 60 + slot.startM;
+        const endMins = slot.endH * 60 + slot.endM;
+        if (slot.startH <= slot.endH) {
+          isActive = currentMinutes >= startMins && currentMinutes < endMins;
+        } else {
+          // overnight slot
+          isActive = currentMinutes >= startMins || currentMinutes < endMins;
+        }
+      }
+
+      html += `
+        <div class="time-slot ${isActive ? 'is-active' : ''}">
+          <div class="slot-time">${slot.time}</div>
+          <div class="slot-body">
+            <div class="slot-name">
+              ${slot.name}
+              ${isActive ? '<span style="color:var(--teal);font-size:11px;font-family:\'JetBrains Mono\';">● ACTIVE NOW</span>' : ''}
+            </div>
+            <div class="slot-desc">${slot.desc}</div>
+          </div>
+          <span class="slot-tag ${slot.tagClass}">${slot.tag}</span>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+    container.innerHTML = html;
+  }
+
+  function setDayView(view) {
+    currentView = view;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    renderSchedule();
+  }
+
+  function updateClock() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
+    document.getElementById('liveTime').textContent = `${dayName} · ${timeStr}`;
+
+    // Find current slot in weekday
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const weekdaySlots = SCHEDULES.weekday.slots;
+    let foundSlot = null;
+
+    for (const slot of weekdaySlots) {
+      if (slot.startH === undefined) continue;
+      const startMins = slot.startH * 60 + slot.startM;
+      const endMins = slot.endH * 60 + slot.endM;
+      if (slot.startH <= slot.endH) {
+        if (currentMinutes >= startMins && currentMinutes < endMins) {
+          foundSlot = slot;
+          break;
+        }
+      } else {
+        if (currentMinutes >= startMins || currentMinutes < endMins) {
+          foundSlot = slot;
+          break;
+        }
+      }
+    }
+
+    if (foundSlot) {
+      document.getElementById('currentSlotText').innerHTML = `Current Schedule Block: <b>${foundSlot.name} (${foundSlot.time})</b>`;
+    } else {
+      document.getElementById('currentSlotText').innerHTML = `Semester III Ongoing · Follow Daily Rhythm`;
+    }
+  }
+
+  renderSchedule();
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
